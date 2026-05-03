@@ -898,16 +898,16 @@ const DEFAULT_BROKERS = [
 ];
 const DEFAULT_PORTFOLIOS = {
   EB:[
-    {ticker:'BN.PA',   name:'Danone',          type:'action',qty:2,   avg:69.54,  current:68.14,  currency:'€',date:'2026-03-25',div:1.91, alertHigh:0,alertLow:60,  target:75,  notes:''},
-    {ticker:'ENGI.PA', name:'Engie',            type:'action',qty:8,   avg:16.85,  current:27.97,  currency:'€',date:'2024-05-13',div:1.54, alertHigh:32, alertLow:0,  target:35,  notes:''},
-    {ticker:'ORA.PA',  name:'Orange',           type:'action',qty:8,   avg:12.58,  current:17.14,  currency:'€',date:'2025-04-25',div:1.20, alertHigh:20, alertLow:0,  target:20,  notes:''},
-    {ticker:'ML.PA',   name:'Michelin',         type:'action',qty:5,   avg:29.94,  current:32.42,  currency:'€',date:'2026-03-16',div:1.13, alertHigh:0,  alertLow:25,  target:38,  notes:''},
-    {ticker:'TTE.PA',  name:'TotalEnergies',    type:'action',qty:3,   avg:39.31,  current:73.07,  currency:'€',date:'2021-05-24',div:4.02, alertHigh:80, alertLow:0,  target:85,  notes:'Long terme'},
-    {ticker:'BCAE.PA', name:'BNP CAC40 ESG',    type:'etf',   qty:10,  avg:10.96,  current:13.24,  currency:'€',date:'2021-09-22',div:0,    alertHigh:0,  alertLow:0,  target:16,  notes:''},
-    {ticker:'EUDV.PA', name:'SPDR SP Euro D',   type:'etf',   qty:4,   avg:27.45,  current:29.25,  currency:'€',date:'2026-03-24',div:0.94, alertHigh:0,  alertLow:0,  target:33,  notes:''},
-    {ticker:'DCAM.PA', name:'AM PEA MSCI UC',   type:'etf',   qty:40,  avg:5.40,   current:5.66,   currency:'€',date:'2026-03-23',div:0,    alertHigh:0,  alertLow:0,  target:7,   notes:''},
-    {ticker:'MWAT.PA', name:'Am Pea M.W.WAT',   type:'etf',   qty:2,   avg:23.75,  current:31.79,  currency:'€',date:'2021-05-24',div:0,    alertHigh:0,  alertLow:0,  target:38,  notes:''},
-    {ticker:'VIE.PA',  name:'Veolia',           type:'action',qty:3,   avg:35.12,  current:35.55,  currency:'€',date:'2026-04-17',div:1.42, alertHigh:0,  alertLow:30,  target:42,  notes:''},
+    {ticker:'BN.PA',   name:'Danone',          type:'action',qty:2,   avg:69.54,  current:68.14,  currency:'€',date:'2026-03-25',div:1.91, alertHigh:0,  alertLow:65,  target:75,  conviction:1, notes:'Entrée au plus haut, -4% en 5 sem. Div 2.75%. Renforcer si redressement volumes confirmé, sinon alléger. Surveiller 65€'},
+    {ticker:'ENGI.PA', name:'Engie',            type:'action',qty:8,   avg:16.85,  current:27.97,  currency:'€',date:'2024-05-13',div:1.54, alertHigh:32, alertLow:0,   target:35,  conviction:3, notes:'Multi-bagger +66%, dividende 5.5%, transition énergétique. Alerte haute 32€ proche'},
+    {ticker:'ORA.PA',  name:'Orange',           type:'action',qty:8,   avg:12.58,  current:17.14,  currency:'€',date:'2025-04-25',div:1.20, alertHigh:20, alertLow:0,   target:20,  conviction:2, notes:'Cible 20€ quasi atteinte, upside résiduel faible. Dividende 6.8% seul argument pour conserver'},
+    {ticker:'ML.PA',   name:'Michelin',         type:'action',qty:5,   avg:29.94,  current:32.42,  currency:'€',date:'2026-03-16',div:1.13, alertHigh:0,  alertLow:25,  target:38,  conviction:2, notes:'Position récente +3%, potentiel +23% vers 38€. Secteur cyclique solide, laisser du temps'},
+    {ticker:'TTE.PA',  name:'TotalEnergies',    type:'action',qty:3,   avg:39.31,  current:73.07,  currency:'€',date:'2021-05-24',div:4.02, alertHigh:80, alertLow:0,   target:85,  conviction:3, notes:'Pilier long terme +102%, dividende 5.1%, encore 16€ vers cible. Position à conserver absolument'},
+    {ticker:'BCAE.PA', name:'BNP CAC40 ESG',    type:'etf',   qty:10,  avg:10.96,  current:13.24,  currency:'€',date:'2021-09-22',div:0,    alertHigh:0,  alertLow:11,  target:16,  conviction:1, notes:'Sous-perf CAC (+16% vs ~40% en 4 ans), sans dividende, incohérent vs stratégie revenus. Candidat remplacement par EUDV ou renforcement Veolia/Engie'},
+    {ticker:'EUDV.PA', name:'SPDR SP Euro D',   type:'etf',   qty:4,   avg:27.45,  current:29.25,  currency:'€',date:'2026-03-24',div:0.94, alertHigh:0,  alertLow:0,   target:33,  conviction:2, notes:'ETF revenus Europe, dividende 3.2%, cohérent avec stratégie revenus passifs'},
+    {ticker:'DCAM.PA', name:'AM PEA MSCI UC',   type:'etf',   qty:40,  avg:5.40,   current:5.66,   currency:'€',date:'2026-03-23',div:0,    alertHigh:0,  alertLow:5.1, target:7,   conviction:1, notes:'Double exposition monde avec MWAT, sans dividende. Position récente neutre. Envisager fusion vers MWAT qui performe mieux (+34%)'},
+    {ticker:'MWAT.PA', name:'Am Pea M.W.WAT',   type:'etf',   qty:2,   avg:23.75,  current:31.79,  currency:'€',date:'2021-05-24',div:0,    alertHigh:0,  alertLow:0,   target:38,  conviction:2, notes:'Thématique Water/infrastructure +34% long terme, pertinente. Préférable à DCAM sur le monde'},
+    {ticker:'VIE.PA',  name:'Veolia',           type:'action',qty:3,   avg:35.12,  current:35.55,  currency:'€',date:'2026-04-17',div:1.42, alertHigh:0,  alertLow:30,  target:42,  conviction:2, notes:'Eau/environnement, dividende 4%, thématique long terme. Position très récente, laisser du temps'},
   ],
   XTB:[
     {ticker:'NDIA.L',  name:'MSCI India',            type:'etf',   qty:10,  avg:7.11,   current:7.76,   currency:'€',date:'2026-04-01',div:0,    alertHigh:0,  alertLow:0,  target:9,   notes:''},
