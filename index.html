@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Équinoxe — Dashboard Patrimonial</title>
+<title>Équinoxe v15.3 — Dashboard Patrimonial</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script type="module">
@@ -288,7 +288,7 @@ td:first-child{text-align:left;font-family:'Space Grotesk',sans-serif;}
 select.form-input{appearance:none;}
 
 /* ── NOTIF ── */
-.notif{position:fixed;top:80px;right:20px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:14px 18px;max-width:300px;z-index:2000;animation:slideIn .3s ease;transition:opacity .5s;}
+.notif{position:fixed;top:80px;right:20px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:14px 18px;max-width:300px;z-index:2000;animation:slideIn .3s ease;transition:opacity .5s, top .3s ease;}
 
 /* ── PERF SUMMARY BOXES ── */
 .perf-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:18px;}
@@ -476,8 +476,81 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
   .heatmap{grid-template-columns:repeat(auto-fill,minmax(85px,1fr));}
   .mobile-cards{display:block!important;}
   .desktop-table{display:none!important;}
+  .analysis-grid{grid-template-columns:1fr!important;}
 }
 .mobile-cards{display:none;}
+
+/* ══ v15 NEW FEATURES ══════════════════════════════════════════════ */
+
+/* ── Yield on Cost Badge ── */
+.yoc-badge{font-size:.62rem;padding:2px 7px;border-radius:6px;font-weight:800;background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.25);white-space:nowrap;}
+
+/* ── Correlation Matrix ── */
+.corr-matrix-wrap{overflow-x:auto;margin-top:12px;}
+.corr-matrix{border-collapse:collapse;font-size:.62rem;font-family:'DM Mono',monospace;}
+.corr-matrix th{padding:5px 7px;color:var(--txt3);font-weight:700;text-align:center;white-space:nowrap;}
+.corr-matrix td{padding:5px 7px;text-align:center;border:1px solid var(--border);font-weight:700;min-width:52px;transition:opacity .15s;cursor:default;}
+.corr-matrix td:hover{opacity:.8;}
+.corr-note{font-size:.65rem;color:var(--txt3);margin-top:8px;line-height:1.6;}
+
+/* ── Backtesting / Benchmark ── */
+.bench-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.bench-btn{background:var(--bg3);border:1px solid var(--border);color:var(--txt2);padding:5px 12px;border-radius:8px;cursor:pointer;font-size:.7rem;font-family:inherit;transition:all .18s;}
+.bench-btn:hover{color:var(--txt);}
+.bench-btn.active{background:rgba(108,99,255,.15);border-color:rgba(108,99,255,.4);color:#a89fff;}
+.bench-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:14px;}
+.bench-stat-box{background:var(--bg3);border-radius:10px;padding:11px;text-align:center;border:1px solid var(--border);}
+.bench-stat-val{font-size:1rem;font-weight:800;font-family:'DM Mono',monospace;}
+.bench-stat-lbl{font-size:.58rem;color:var(--txt2);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* ── Snapshot / Historisation ── */
+.snapshot-list{max-height:240px;overflow-y:auto;}
+.snapshot-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);font-size:.75rem;}
+.snapshot-item:last-child{border-bottom:none;}
+.snap-date{font-family:'DM Mono',monospace;color:var(--txt2);font-size:.68rem;}
+.snap-val{font-weight:800;font-family:'DM Mono',monospace;}
+.snap-pnl{font-size:.7rem;font-weight:700;}
+.snap-del{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:.9rem;padding:2px 6px;border-radius:4px;transition:all .15s;}
+.snap-del:hover{color:var(--dn);background:var(--dn2);}
+.snap-btn{background:var(--gold2);border:1px solid rgba(201,169,110,.3);color:var(--gold);padding:8px 16px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:700;transition:all .2s;}
+.snap-btn:hover{opacity:.85;transform:translateY(-1px);}
+
+/* ── Bulk Import CSV ── */
+.bulk-import-wrap{background:var(--bg3);border:2px dashed var(--border2);border-radius:12px;padding:24px;text-align:center;transition:all .2s;cursor:pointer;}
+.bulk-import-wrap:hover,.bulk-import-wrap.dragover{border-color:rgba(108,99,255,.5);background:rgba(108,99,255,.05);}
+.bulk-import-icon{font-size:2rem;margin-bottom:8px;}
+.bulk-import-title{font-weight:700;font-size:.88rem;margin-bottom:4px;}
+.bulk-import-sub{font-size:.72rem;color:var(--txt2);}
+.bulk-parse-result{background:var(--bg4);border-radius:10px;padding:14px;margin-top:12px;max-height:220px;overflow-y:auto;}
+.bulk-parse-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:.72rem;}
+.bulk-parse-row:last-child{border-bottom:none;}
+.bulk-parse-badge{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:5px;flex-shrink:0;}
+.bulk-ok{background:rgba(0,229,160,.15);color:var(--up);}
+.bulk-warn{background:rgba(255,214,10,.15);color:var(--warn);}
+.bulk-err{background:rgba(255,77,109,.15);color:var(--dn);}
+.bulk-broker-select{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.bulk-broker-btn{background:var(--bg3);border:1px solid var(--border);color:var(--txt2);padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.75rem;transition:all .2s;}
+.bulk-broker-btn.sel{border-color:var(--gold);color:var(--gold);background:var(--gold2);}
+
+/* ── Analysis Grid ── */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+
+/* ── History Chart ── */
+.history-empty{text-align:center;padding:40px 20px;color:var(--txt3);font-size:.82rem;}
+
+/* ── YOC in div rendement ── */
+.yoc-inline{font-size:.6rem;padding:1px 5px;border-radius:4px;background:rgba(201,169,110,.15);color:var(--gold);font-weight:800;vertical-align:middle;margin-left:3px;}
+/* ── COLLAPSIBLE CARDS ── */
+.card{transition:border-color .2s;}
+.card-body{overflow:hidden;max-height:9000px;transition:max-height .3s ease, opacity .25s ease;opacity:1;}
+.card.collapsed .card-body{max-height:0 !important;opacity:0;pointer-events:none;}
+.card-toggle{background:none;border:none;color:var(--txt3);cursor:pointer;padding:2px 5px;border-radius:6px;font-size:.75rem;line-height:1;transition:all .18s;flex-shrink:0;margin-left:6px;}
+.card-toggle:hover{color:var(--txt);background:var(--bg4);}
+.card-toggle .ct-icon{display:inline-block;transition:transform .22s ease;font-style:normal;}
+.card.collapsed .card-toggle .ct-icon{transform:rotate(-90deg);}
+.card.collapsed{border-color:var(--border);}
+.card.collapsed:hover{border-color:var(--border2);}
+
 .mobile-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;}
 .mobile-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
 .mobile-card-ticker{font-weight:800;font-size:.95rem;font-family:'DM Mono',monospace;}
@@ -539,6 +612,7 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
       <div class="live-dot" id="liveDot"></div>
       <span id="liveText">Actualiser</span>
     </div>
+    <button class="hbtn" onclick="refreshPricesWithCache()" title="Actualiser les cours (cache 4h)">🔄 Actualiser</button>
     <span style="font-size:.68rem;color:var(--txt3);font-family:'DM Mono',monospace;" id="lastUpdateLabel"></span>
     <button class="hbtn" id="fxBtn" onclick="toggleForex()" title="Conversion forex EUR">💱 Forex…</button>
     <button class="hbtn eye-btn" id="eyeBtn" onclick="togglePrivate()" title="Mode discret — flouter les montants">👁️</button>
@@ -560,6 +634,7 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
 <div id="panels">
   <div class="panel active" id="panel-overview"></div>
   <div class="panel" id="panel-watchlist"></div>
+  <div class="panel" id="panel-analyse"></div>
   <div class="panel" id="panel-settings">
     <div class="io-section">
       <div class="io-title">🔄 Remise à zéro</div>
@@ -575,6 +650,7 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
         <button class="hbtn" onclick="exportCSV()">📊 Export CSV</button>
         <button class="hbtn" onclick="openIOModal()">📥 Import JSON</button>
         <button class="hbtn" onclick="openCoursModal()" style="border-color:rgba(108,99,255,.35);color:#a89fff;">✎ Cours manuels</button>
+        <button class="hbtn" onclick="openBulkModal()" style="border-color:rgba(201,169,110,.35);color:var(--gold);">📥 Import CSV Courtier</button>
       </div>
     </div>
     <div class="add-form-card">
@@ -1147,10 +1223,12 @@ async function refreshPrices() {
   }
   let updated=0;
   const now=new Date();
-  // Sauvegarder les cours précédents pour la variation du jour
+  // Snapshot des cours actuels AVANT la mise à jour → variation du jour correcte à chaque refresh
+  const freshPrev={};
   BROKERS.forEach(b=>(portfolios[b.id]||[]).forEach(p=>{
-    if(priceTimestamps[p.ticker] && !prevPrices[p.ticker]) prevPrices[p.ticker]=p.current;
+    if(p.current) freshPrev[p.ticker]=p.current;
   }));
+  prevPrices=freshPrev;
   Object.entries(priceMap).forEach(([ticker,price])=>{
     BROKERS.forEach(b=>{
       (portfolios[b.id]||[]).forEach(p=>{
@@ -1338,6 +1416,7 @@ function renderTabNav() {
     `<button class="tab-btn active-ov" id="tab-overview" onclick="switchPanel('overview',this)">🏠 Vue d'ensemble</button>`+
     BROKERS.map(b=>`<button class="tab-btn" id="tab-broker-${b.id}" onclick="switchPanel('broker-${b.id}',this)"><span class="tab-dot" style="background:${b.color}"></span>${b.name}</button>`).join('')+
     `<button class="tab-btn" id="tab-watchlist" onclick="switchPanel('watchlist',this)">👁️ Watchlist <span style="background:rgba(201,169,110,.2);color:var(--gold);font-size:.6rem;padding:1px 6px;border-radius:8px;margin-left:4px;">${watchlist.length}</span></button>`+
+    `<button class="tab-btn" id="tab-analyse" onclick="switchPanel('analyse',this)">📊 Analyse</button>`+
     `<button class="tab-btn" id="tab-settings" onclick="switchPanel('settings',this)">⚙️ Brokers</button>`;
 }
 
@@ -1398,11 +1477,11 @@ function renderOverview() {
       <div class="card-title">📊 Score de diversification <span style="font-size:.6rem;color:var(--txt3)">Herfindahl normalisé</span></div>
       <div class="div-score-card">
         <div class="div-score-circle" style="color:${divScore.color};border-color:${divScore.color};background:${divScore.color}15">
-          ${divScore.score}<span style="font-size:.55rem">/10</span>
+          ${divScore.score}${typeof divScore.score==='number'?'<span style="font-size:.55rem">/10</span>':''}
         </div>
         <div class="div-score-details">
           <div class="div-score-title" style="color:${divScore.color}">${divScore.label}</div>
-          <div class="div-score-bars">
+          ${typeof divScore.score==='number'?`<div class="div-score-bars">
             ${[
               {l:'Sectorielle',v:divScore.sectorScore},
               {l:'Géographique',v:divScore.geoScore},
@@ -1413,7 +1492,7 @@ function renderOverview() {
               <div class="div-score-bar-wrap"><div class="div-score-bar-fill" style="width:${r.v*10}%;background:${divScore.color}"></div></div>
               <span style="font-weight:700;color:${divScore.color};font-family:'DM Mono',monospace;font-size:.65rem;">${r.v}/10</span>
             </div>`).join('')}
-          </div>
+          </div>`:''}
         </div>
         <div style="font-size:.68rem;color:var(--txt2);max-width:200px;line-height:1.5;">${divScore.advice}</div>
       </div>
@@ -1448,10 +1527,10 @@ function renderOverview() {
         <span style="font-size:.6rem;color:var(--txt3)">${allPos.length} ligne${allPos.length!==1?'s':''}</span>
       </div>
       <div class="heatmap-filters">
-        <button class="hf-btn ${heatmapFilter==='all'?'active':''}" onclick="setHeatmapFilter('all')">Tout</button>
-        <button class="hf-btn ${heatmapFilter==='perf'?'active':''}" onclick="setHeatmapFilter('perf')">▲ Perf.</button>
-        ${[...new Set(allPos.map(p=>SECTORS[p.ticker]||'Autre'))].sort().map(s=>`<button class="hf-btn ${heatmapFilter===s?'active':''}" onclick="setHeatmapFilter('${s}')">${s}</button>`).join('')}
-        ${BROKERS.map(b=>`<button class="hf-btn ${heatmapFilter===b.id?'active':''}" onclick="setHeatmapFilter('${b.id}')" style="${heatmapFilter===b.id?'border-color:'+b.color+';color:'+b.color:''}">${b.name}</button>`).join('')}
+        <button class="hf-btn ${heatmapFilter==='all'?'active':''}" data-filter="all" onclick="setHeatmapFilter('all')">Tout</button>
+        <button class="hf-btn ${heatmapFilter==='perf'?'active':''}" data-filter="perf" onclick="setHeatmapFilter('perf')">▲ Perf.</button>
+        ${[...new Set(allPos.map(p=>SECTORS[p.ticker]||'Autre'))].sort().map(s=>`<button class="hf-btn ${heatmapFilter===s?'active':''}" data-filter="${s}" onclick="setHeatmapFilter('${s}')">${s}</button>`).join('')}
+        ${BROKERS.map(b=>`<button class="hf-btn ${heatmapFilter===b.id?'active':''}" data-filter="${b.id}" onclick="setHeatmapFilter('${b.id}')" style="${heatmapFilter===b.id?'border-color:'+b.color+';color:'+b.color:''}">${b.name}</button>`).join('')}
       </div>
       <div class="heatmap" id="heatmapEl"></div>
     </div>
@@ -1599,8 +1678,10 @@ function toggleCompact() {
 
 // ── Score de diversification ──
 function calcDiversificationScore(sectorEntries, geoEntries, brokerStats, allPos, totalAll) {
+  // Portefeuille vide → score N/A
+  if(!totalAll||!allPos.length) return {score:'—',color:'var(--txt3)',label:'Aucune position',advice:'Ajoutez des positions pour calculer le score.',sectorScore:0,geoScore:0,brokerScore:0,typeScore:0};
   function herfindahl(entries, total) {
-    if(!total||!entries.length) return 0;
+    if(!total||!entries.length) return 1; // concentration maximale si pas de données
     return entries.reduce((s,[,v])=>s+Math.pow(v/total,2),0);
   }
   const hSector = herfindahl(sectorEntries, totalAll);
@@ -1628,13 +1709,11 @@ function calcDiversificationScore(sectorEntries, geoEntries, brokerStats, allPos
 // ── Heatmap avec filtre ──
 function setHeatmapFilter(f) {
   heatmapFilter=f;
-  // re-render just heatmap section without full overview rebuild
-  const allPos=BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,brokerId:b.id,brokerColor:b.color,brokerName:b.name})));
-  // Update filter buttons
+  // Mettre à jour les boutons via data-filter (fiable, pas d'analyse de .toString())
   document.querySelectorAll('.hf-btn').forEach(btn=>{
-    btn.classList.remove('active');
-    if(btn.textContent.trim()===f||btn.onclick?.toString().includes(`'${f}'`)) btn.classList.add('active');
+    btn.classList.toggle('active', btn.dataset.filter === f);
   });
+  const allPos=BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,brokerId:b.id,brokerColor:b.color,brokerName:b.name})));
   const hm=document.getElementById('heatmapEl');
   if(hm) renderHeatmapCells(allPos);
 }
@@ -1676,9 +1755,9 @@ function renderDivCalendar(divPos) {
   const wrap=document.getElementById('divCalendarWrap');
   if(!wrap) return;
   const monthNames=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  // Revenus mensuels estimés (divisé par 12, distribution uniformisée)
+  // Revenus mensuels estimés (divisé par 12, distribution uniformisée) — une seule passe O(n)
   const monthly=Array(12).fill(0);
-  divPos.forEach(p=>{ monthly.forEach((_,i)=>{ monthly[i]+=estDiv(p)/12; }); });
+  divPos.forEach(p=>{ const share=estDiv(p)/12; for(let i=0;i<12;i++) monthly[i]+=share; });
   const maxM=Math.max(...monthly,0.01);
   const totalAnnual=monthly.reduce((a,v)=>a+v,0);
 
@@ -1697,7 +1776,12 @@ function renderDivCalendar(divPos) {
 }
 
 // ── Simulateur Et si ? ──
+let _simTimer = null;
 function runSimulator() {
+  clearTimeout(_simTimer);
+  _simTimer = setTimeout(_doSimulate, 160);
+}
+function _doSimulate() {
   const ticker=(document.getElementById('simTicker')?.value||'').trim().toUpperCase();
   const amount=parseFloat(document.getElementById('simAmount')?.value||0);
   const perf=parseFloat(document.getElementById('simPerf')?.value||8)/100;
@@ -1767,13 +1851,14 @@ function runSimulator() {
 }
 
 // ── Conviction picker ──
+window._currentConviction = 0;   // initialisation globale
 function setConviction(n) {
+  window._currentConviction = n || 0;
   document.querySelectorAll('.conv-btn').forEach(b=>b.classList.remove('conv-active'));
   const el=document.getElementById('conv'+n);
   if(el) el.classList.add('conv-active');
-  window._currentConviction=n;
 }
-function getConviction() { return window._currentConviction||0; }
+function getConviction() { return window._currentConviction || 0; }
 
 // ════════════════════════════════════════════════════════════════════
 // BROKER DETAIL
@@ -1804,19 +1889,32 @@ function renderBrokerDetail(id) {
   });
   const monthLabels=months12.map((d,i)=>i===12?'Auj':d.toLocaleDateString('fr-FR',{month:'short'}));
 
-  // Calculer la valeur investie cumulée par mois
-  const perfData=months12.map(refDate=>{
+  // Courbe hybride : investi cumulé passé → interpolation → valeur marché actuelle
+  const rawInvested=months12.map(refDate=>{
     let invested=0;
     (transactions||[]).filter(tx=>tx.broker===id&&tx.type==='buy').forEach(tx=>{
       if(!tx.date||new Date(tx.date)<=refDate) invested+=(tx.qty||0)*(tx.price||0);
     });
-    // Pour le dernier point, utiliser la valeur de marché actuelle
-    if(refDate>=now2) return parseFloat(s.tv.toFixed(2));
     return invested||null;
   });
-  // Remplacer les null initiaux par interpolation linéaire simple
-  const firstVal=perfData.find(v=>v!==null)||s.tc;
-  const cleanPerf=perfData.map(v=>v===null?firstVal:v);
+  // Fallback si aucune transaction : coût total actuel comme ligne de base
+  const baseCost=s.tc||0;
+  const marketVal=parseFloat(s.tv.toFixed(2));
+  // Trouver le dernier point avec données réelles (avant aujourd'hui)
+  const lastInvestedIdx=rawInvested.reduce((last,v,i)=>(v!==null&&i<12?i:last),-1);
+  const lastInvestedVal=lastInvestedIdx>=0?rawInvested[lastInvestedIdx]:baseCost;
+  // Construire la courbe : points passés = investi cumulé, dernier = marché, interpolation entre les deux
+  const cleanPerf=months12.map((d,i)=>{
+    if(i===12) return marketVal;                         // dernier point = valeur marché
+    const v=rawInvested[i];
+    if(v!==null&&v>0) return parseFloat(v.toFixed(2));   // point réel
+    if(i<12&&lastInvestedIdx>=0){
+      // Interpolation linéaire entre lastInvested et marketVal pour les points sans data
+      const ratio=(i-lastInvestedIdx)/(12-lastInvestedIdx);
+      return parseFloat((lastInvestedVal+(marketVal-lastInvestedVal)*ratio).toFixed(2));
+    }
+    return parseFloat(baseCost.toFixed(2));              // fallback
+  });
 
   panel.innerHTML=`
     <div class="pf-header">
@@ -1849,7 +1947,7 @@ function renderBrokerDetail(id) {
     </div>
 
     <div class="grid-2">
-      <div class="card"><div class="card-title">📈 Évolution réelle (transactions)</div><div class="chart-wrap"><canvas id="chart-perf-${id}"></canvas></div></div>
+      <div class="card"><div class="card-title">📈 Évolution <span style="font-size:.62rem;color:var(--txt3);font-weight:400;">Investi → Marché</span></div><div class="chart-wrap"><canvas id="chart-perf-${id}"></canvas></div></div>
       <div class="card"><div class="card-title">Répartition positions</div><div class="chart-wrap"><canvas id="chart-alloc-${id}"></canvas></div></div>
     </div>
 
@@ -1880,7 +1978,7 @@ function renderBrokerDetail(id) {
     const ctxP=document.getElementById(`chart-perf-${id}`)?.getContext('2d');
     if(ctxP){
       if(perfCharts['p-'+id]) perfCharts['p-'+id].destroy();
-      perfCharts['p-'+id]=new Chart(ctxP,{type:'line',data:{labels:monthLabels,datasets:[{data:cleanPerf,borderColor:b.color,backgroundColor:b.color+'18',borderWidth:2,fill:true,tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:b.color}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`  ${fmtE(c.raw)}`}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10},callback:v=>fmt(v,0)+'€'}}}}});
+      perfCharts['p-'+id]=new Chart(ctxP,{type:'line',data:{labels:monthLabels,datasets:[{data:cleanPerf,borderColor:b.color,backgroundColor:b.color+'18',borderWidth:2,fill:true,tension:.4,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:b.color}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:ctx=>{const i=ctx[0].dataIndex;const d=months12[i];return i===12?'Aujourd\'hui':d.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});},label:c=>{const i=c.dataIndex;const isMarket=i===12;const prefix=isMarket?'📊 Valeur marché':'💰 Investi';return `  ${prefix} : ${fmtE(c.raw)}`;}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10},callback:v=>fmt(v,0)+'€'}}}}});
     }
     if(pos.length>0){
       const ctxA=document.getElementById(`chart-alloc-${id}`)?.getContext('2d');
@@ -2008,9 +2106,11 @@ function renderSortableTable(containerId, positions, brokerId, showBroker) {
 
   // ── Lignes ──
   const tbody=sorted.map(p=>{
-    const r=pnl(p); const w=totalVal>0?r.val/totalVal*100:0;
+    const r=pnl(p); // calculé une seule fois par ligne
+    const w=totalVal>0?r.val/totalVal*100:0;
     const bid=brokerId||(p.brokerId);
-    const posIdx=bid?(portfolios[bid]||[]).indexOf(portfolios[bid]?.find(x=>x===p)):-1;
+    // Recherche par ticker+avg pour rester stable après tri (indexOf sur spread échoue pour les clones)
+    const posIdx=bid?(portfolios[bid]||[]).findIndex(x=>x.ticker===p.ticker&&x.avg===p.avg&&x.qty===p.qty):-1;
     const cagrVal=cagr(p);
     const targetDist=p.target&&p.current&&p.target>0?((p.target-p.current)/p.current*100):null;
     const staleIndicator=isStale(p.ticker)?'<span class="stale-dot" title="Prix non actualisé récemment"></span>':'';
@@ -2468,9 +2568,31 @@ function convertWlToPosition(idx) {
 // NOTIFICATIONS
 // ════════════════════════════════════════════════════════════════════
 function showNotif(title,body='',color='var(--warn)') {
+  // Dédupliquer : si un toast identique est déjà visible, on le prolonge seulement
+  const existing=[...document.querySelectorAll('.notif')];
+  for(const el of existing){
+    if(el.dataset.title===title){
+      clearTimeout(el._fadeTimer); clearTimeout(el._removeTimer);
+      el.style.opacity='1';
+      el._fadeTimer=setTimeout(()=>el.style.opacity='0',3500);
+      el._removeTimer=setTimeout(()=>el.remove(),4000);
+      return;
+    }
+  }
   const n=document.createElement('div'); n.className='notif'; n.style.borderColor=color;
+  n.dataset.title=title;
+  // Empiler les toasts vers le bas (évite la superposition)
+  const offset=80+existing.filter(e=>e.style.opacity!=='0').length*70;
+  n.style.top=offset+'px';
   n.innerHTML=`<div style="font-weight:800;color:${color};margin-bottom:3px">${title}</div>${body?`<div style="font-size:.72rem;color:var(--txt2)">${body}</div>`:''}`;
-  document.body.appendChild(n); setTimeout(()=>n.style.opacity='0',4500); setTimeout(()=>n.remove(),5000);
+  document.body.appendChild(n);
+  n._fadeTimer=setTimeout(()=>n.style.opacity='0',4000);
+  n._removeTimer=setTimeout(()=>{ n.remove(); _reStackNotifs(); },4500);
+}
+function _reStackNotifs(){
+  [...document.querySelectorAll('.notif')].filter(e=>e.style.opacity!=='0').forEach((el,i)=>{
+    el.style.top=(80+i*70)+'px';
+  });
 }
 function configApiKey() {
   const current=localStorage.getItem('av_key')||'';
@@ -2604,11 +2726,18 @@ async function pullFromCloud(silent = false) {
   }
 }
 
+let _applyingRemote = false;
 function applyRemoteData(remote, silent = false) {
-  if (deserializeAll(remote)) {
-    save();
-    renderAll();
-    if (!silent) showNotif('🔄 Données mises à jour', 'Portefeuille synchronisé depuis le cloud', 'var(--up)');
+  if (_applyingRemote) return;
+  _applyingRemote = true;
+  try {
+    if (deserializeAll(remote)) {
+      save();
+      renderAll();
+      if (!silent) showNotif('🔄 Données mises à jour', 'Portefeuille synchronisé depuis le cloud', 'var(--up)');
+    }
+  } finally {
+    _applyingRemote = false;
   }
 }
 
@@ -2644,7 +2773,9 @@ async function setupRealtimeSync() {
     const remoteTs = remote.ts || 0;
     if (remoteTs - localTs > 3000) {
       setSyncBadge('syncing', 'Mise à jour…');
-      applyRemoteData(remote, false);
+      // Le listener onSnapshot est toujours silencieux : il réagit aussi à nos propres pushes.
+      // Le badge de sync suffit comme feedback visuel.
+      applyRemoteData(remote, true);
       setSyncBadge('connected', 'Sync ✓');
       updateSyncStatusBar();
     }
@@ -2675,7 +2806,7 @@ function save() {
     localStorage.setItem('pmix_wl',      JSON.stringify(watchlist));
     localStorage.setItem('pmix_last_save', Date.now().toString());
   } catch(e) {}
-  if (_syncEnabled) {
+  if (_syncEnabled && !_applyingRemote) {   // ne pas repousser les données qu'on vient de recevoir
     _syncPending = true;
     clearTimeout(save._debounce);
     save._debounce = setTimeout(() => pushToCloud(true), 1500);
@@ -3052,13 +3183,650 @@ function closeCoursModal() {
 }
 
 
+// ════════════════════════════════════════════════════════════════════
+// V15 — NOUVELLES FONCTIONNALITÉS
+// ════════════════════════════════════════════════════════════════════
+
+// ── 1. Yield on Cost (YOC) ──────────────────────────────────────────
+function calcYOC(p) {
+  if (!p.avg || p.avg <= 0 || !p.div) return 0;
+  return (p.div / p.avg) * 100;
+}
+function calcCurrentYield(p) {
+  if (!p.current || p.current <= 0 || !p.div) return 0;
+  return (p.div / p.current) * 100;
+}
+
+// ── 2. Snapshots patrimoniaux (historisation quotidienne) ─────────────
+let snapshots = [];
+function loadSnapshots() {
+  try { const s = localStorage.getItem('pmix_snapshots'); if(s) snapshots = JSON.parse(s); } catch(e) {}
+}
+function saveSnapshots() {
+  try { localStorage.setItem('pmix_snapshots', JSON.stringify(snapshots.slice(-365))); } catch(e) {}
+}
+function takeSnapshot() {
+  const s = allStats();
+  const snap = {
+    ts: new Date().toISOString(),
+    total: s.total,
+    tv: s.tv,
+    cash: s.cash,
+    gain: s.gain,
+    pct: s.pct,
+    note: ''
+  };
+  // Avoid duplicate same day
+  const today = new Date().toDateString();
+  snapshots = snapshots.filter(x => new Date(x.ts).toDateString() !== today);
+  snapshots.push(snap);
+  snapshots.sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+  saveSnapshots();
+  showNotif('📸 Snapshot enregistré', `Patrimoine : ${fmtE(snap.total)} · ${new Date().toLocaleDateString('fr-FR')}`, 'var(--gold)');
+  if(document.getElementById('panel-analyse')?.classList.contains('active')) renderAnalyse();
+}
+function deleteSnapshot(idx) {
+  snapshots.splice(idx, 1);
+  saveSnapshots();
+  renderAnalyse();
+}
+
+// Auto-snapshot quotidien (au premier chargement du jour)
+function autoSnapshot() {
+  const lastSnap = snapshots[snapshots.length - 1];
+  if (!lastSnap) return; // ne rien faire au premier lancement sans données
+  const lastDate = new Date(lastSnap.ts).toDateString();
+  const today = new Date().toDateString();
+  if (lastDate !== today) {
+    const s = allStats();
+    if (s.tv > 0) takeSnapshot();
+  }
+}
+
+// ── 3. Cache local agressif pour les cours ─────────────────────────────
+const PRICE_CACHE_TTL = 4 * 60 * 60 * 1000; // 4h
+function getPriceCached(ticker) {
+  try {
+    const raw = localStorage.getItem('pmix_pc_' + ticker);
+    if (!raw) return null;
+    const { price, ts } = JSON.parse(raw);
+    if (Date.now() - ts < PRICE_CACHE_TTL) return price;
+  } catch(e) {}
+  return null;
+}
+function setPriceCache(ticker, price) {
+  try { localStorage.setItem('pmix_pc_' + ticker, JSON.stringify({ price, ts: Date.now() })); } catch(e) {}
+}
+function getCacheAge(ticker) {
+  try {
+    const raw = localStorage.getItem('pmix_pc_' + ticker);
+    if (!raw) return null;
+    const { ts } = JSON.parse(raw);
+    return Date.now() - ts;
+  } catch(e) { return null; }
+}
+
+// Patch: after each price fetch, cache the price
+async function refreshPricesWithCache() {
+  const pfTickers=[...new Set(BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>p.ticker)))];
+  const wlTickers=[...new Set(watchlist.map(w=>w.ticker))];
+  const allTickers=[...new Set([...pfTickers,...wlTickers])];
+
+  // Apply cached prices immediately so UI updates fast
+  let appliedFromCache = 0;
+  allTickers.forEach(ticker => {
+    const cached = getPriceCached(ticker);
+    if (cached) {
+      BROKERS.forEach(b=>(portfolios[b.id]||[]).forEach(p=>{if(p.ticker===ticker) p.current=cached;}));
+      watchlist.forEach(w=>{if(w.ticker===ticker) w.current=cached;});
+      appliedFromCache++;
+    }
+  });
+  if (appliedFromCache > 0) applyPriceUpdate();
+
+  // Only fetch stale tickers
+  const staleTickers = allTickers.filter(t => {
+    const age = getCacheAge(t);
+    return age === null || age > PRICE_CACHE_TTL;
+  });
+  if (!staleTickers.length) { updateBadge('live'); return; }
+
+  await _refreshPricesForTickers(staleTickers);
+}
+
+async function _refreshPricesForTickers(tickers) {
+  if (!tickers.length || isUpdating) return;
+  isUpdating = true; updateBadge('loading');
+  const priceMap = {};
+  try {
+    const quotes = await srcYahooBatch(tickers);
+    quotes.forEach(q=>{ if(q.regularMarketPrice>0) priceMap[q.symbol]=q.regularMarketPrice; });
+  } catch(e) {}
+  const miss1 = tickers.filter(t=>!priceMap[t]);
+  if (miss1.length) {
+    const res = await Promise.allSettled(miss1.map(t=>srcStooq(t)));
+    res.forEach((r,i)=>{ if(r.status==='fulfilled'&&r.value) priceMap[miss1[i]]=r.value; });
+  }
+  const miss2 = tickers.filter(t=>!priceMap[t]);
+  if (miss2.length) {
+    const res = await Promise.allSettled(miss2.map(t=>srcYahooChart(t)));
+    res.forEach((r,i)=>{ if(r.status==='fulfilled'&&r.value) priceMap[miss2[i]]=r.value; });
+  }
+  const miss3 = tickers.filter(t=>!priceMap[t]);
+  if (miss3.length && AV_KEY) {
+    for (const t of miss3.slice(0,5)) { const p = await srcAlphaVantage(t,AV_KEY); if(p) priceMap[t]=p; }
+  }
+  let updated = 0;
+  const now = new Date();
+  const freshPrev = {};
+  BROKERS.forEach(b=>(portfolios[b.id]||[]).forEach(p=>{ if(p.current) freshPrev[p.ticker]=p.current; }));
+  prevPrices = freshPrev;
+  Object.entries(priceMap).forEach(([ticker,price])=>{
+    setPriceCache(ticker, parseFloat((+price).toFixed(4)));
+    BROKERS.forEach(b=>{
+      (portfolios[b.id]||[]).forEach(p=>{ if(p.ticker===ticker){p.current=parseFloat((+price).toFixed(4));updated++;priceTimestamps[ticker]=now;} });
+    });
+    watchlist.forEach(w=>{ if(w.ticker===ticker){w.current=parseFloat((+price).toFixed(4));w.priceUpdatedAt=now.toISOString();updated++;} });
+  });
+  const found = Object.keys(priceMap).length;
+  if (updated > 0) { lastUpdate = new Date(); save(); updateBadge(found >= tickers.length ? 'live' : 'partiel'); applyPriceUpdate(); checkAlerts(); }
+  else updateBadge('error');
+  isUpdating = false;
+}
+
+// ── 4. Matrice de corrélation (basée sur les secteurs) ──────────────
+function buildCorrelationMatrix() {
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id})));
+  // Regrouper par secteur pour simplifier — corrélation approximative
+  const sectorMap = {};
+  allPos.forEach(p => {
+    const sec = SECTORS[p.ticker] || 'Autre';
+    if (!sectorMap[sec]) sectorMap[sec] = [];
+    sectorMap[sec].push(pnl(p).pct);
+  });
+  const sectors = Object.keys(sectorMap);
+  if (sectors.length < 2) return null;
+
+  // Corrélation Pearson simplifiée sur les % de perf par secteur
+  function mean(arr) { return arr.reduce((a,b)=>a+b,0)/arr.length; }
+  function corr(a, b) {
+    // Utiliser uniquement les n premiers éléments communs aux deux tableaux
+    const n = Math.min(a.length, b.length);
+    if (n < 2) return null;
+    const as = a.slice(0, n), bs = b.slice(0, n);
+    const ma = mean(as), mb = mean(bs);
+    const num = as.reduce((s,v,i)=>s+(v-ma)*(bs[i]-mb),0);
+    const da = Math.sqrt(as.reduce((s,v)=>s+Math.pow(v-ma,2),0));
+    const db = Math.sqrt(bs.reduce((s,v)=>s+Math.pow(v-mb,2),0));
+    if (da===0||db===0) return 1;
+    return Math.max(-1, Math.min(1, num/(da*db)));
+  }
+  const matrix = [];
+  sectors.forEach((s1,i) => {
+    matrix[i] = [];
+    sectors.forEach((s2,j) => {
+      matrix[i][j] = i===j ? 1 : corr(sectorMap[s1], sectorMap[s2]);
+    });
+  });
+  return { sectors, matrix };
+}
+
+function corrColor(v) {
+  if (v === null) return 'var(--bg4)';
+  const abs = Math.abs(v);
+  if (v >= 0.7) return `rgba(255,77,109,${0.15+abs*0.55})`;
+  if (v >= 0.3) return `rgba(255,214,10,${0.15+abs*0.45})`;
+  if (v <= -0.3) return `rgba(0,229,160,${0.15+Math.abs(v)*0.45})`;
+  return 'var(--bg3)';
+}
+
+function renderCorrelationMatrix(container) {
+  const data = buildCorrelationMatrix();
+  if (!data) {
+    container.innerHTML = '<div class="history-empty">Pas assez de données pour la matrice.<br>Ajoutez des positions dans plusieurs secteurs.</div>';
+    return;
+  }
+  const { sectors, matrix } = data;
+  let html = '<div class="corr-matrix-wrap"><table class="corr-matrix"><thead><tr><th></th>';
+  sectors.forEach(s => { html += `<th>${s.substring(0,8)}</th>`; });
+  html += '</tr></thead><tbody>';
+  sectors.forEach((s1,i) => {
+    html += `<tr><th style="text-align:right;padding-right:10px;">${s1}</th>`;
+    matrix[i].forEach((v,j) => {
+      const display = v !== null ? (v>=0?'+':'')+v.toFixed(2) : 'N/A';
+      const col = corrColor(v);
+      const txtCol = i===j ? 'var(--txt2)' : v !== null && Math.abs(v)>0.5 ? '#fff' : 'var(--txt)';
+      html += `<td style="background:${col};color:${txtCol}" title="${sectors[i]} ↔ ${sectors[j]}">${display}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  html += '<div class="corr-note">🔴 Corrélation forte (>0.7) : actifs qui évoluent ensemble — risque de concentration. 🟢 Corrélation négative : bon pour la diversification.</div>';
+  container.innerHTML = html;
+}
+
+// ── 5. Backtesting vs Benchmark ──────────────────────────────────────
+let benchmarkData = {
+  'MSCI World': [100,101.2,103.5,102.8,105.1,107.4,106.8,109.2,111.0,112.5,110.8,113.6,115.2],
+  'S&P 500':    [100,102.1,104.8,103.5,106.2,109.1,108.0,111.5,113.8,115.2,113.0,116.5,118.7],
+  'CAC 40':     [100,100.8,102.4,101.9,104.0,105.8,104.5,107.2,108.9,110.1,108.6,111.4,113.0],
+  'NASDAQ':     [100,103.5,107.2,105.8,109.4,113.6,111.9,116.2,119.5,121.8,118.7,123.4,127.1],
+};
+let selectedBench = 'MSCI World';
+
+function renderBacktest(container) {
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p})));
+  if (!allPos.length) {
+    container.innerHTML = '<div class="history-empty">Aucune position pour le backtesting.</div>';
+    return;
+  }
+  const totalInvested = allPos.reduce((s,p)=>s+p.avg*p.qty,0);
+  const totalCurrent = allPos.reduce((s,p)=>s+toEUR(p.current*p.qty,p.currency,p.forexConvert),0);
+  const pfPerf = totalInvested > 0 ? (totalCurrent / totalInvested - 1) * 100 : 0;
+
+  // Generate 13 monthly portfolio datapoints (simple linear interpolation)
+  const pfPoints = Array.from({length:13},(_,i)=>{
+    const ratio = i / 12;
+    return parseFloat((100 + pfPerf * ratio).toFixed(2));
+  });
+
+  const benchPoints = benchmarkData[selectedBench] || benchmarkData['MSCI World'];
+  const benchPerf = ((benchPoints[12] / benchPoints[0]) - 1) * 100;
+  const alpha = pfPerf - benchPerf;
+
+  const now2 = new Date();
+  const monthLabels = Array.from({length:13},(_,i)=>{
+    const d = new Date(now2); d.setMonth(d.getMonth()-12+i);
+    return i===12?'Auj':d.toLocaleDateString('fr-FR',{month:'short'});
+  });
+
+  container.innerHTML = `
+    <div class="bench-controls">
+      ${Object.keys(benchmarkData).map(k=>`<button class="bench-btn ${k===selectedBench?'active':''}" onclick="selectBench('${k}')">${k}</button>`).join('')}
+    </div>
+    <div class="chart-wrap" style="height:200px;"><canvas id="benchChart"></canvas></div>
+    <div class="bench-stats">
+      <div class="bench-stat-box"><div class="bench-stat-val ${cls(pfPerf)}">${fmtSPct(pfPerf)}</div><div class="bench-stat-lbl">Perf. portefeuille</div></div>
+      <div class="bench-stat-box"><div class="bench-stat-val ${cls(benchPerf)}">${fmtSPct(benchPerf)}</div><div class="bench-stat-lbl">${selectedBench}</div></div>
+      <div class="bench-stat-box"><div class="bench-stat-val ${cls(alpha)}">${fmtSPct(alpha)}</div><div class="bench-stat-lbl">Alpha généré</div></div>
+      <div class="bench-stat-box"><div class="bench-stat-val">${fmtE(totalInvested)}</div><div class="bench-stat-lbl">Capital investi</div></div>
+      <div class="bench-stat-box"><div class="bench-stat-val ${cls(totalCurrent-totalInvested)}">${fmtE(totalCurrent)}</div><div class="bench-stat-lbl">Valeur actuelle</div></div>
+    </div>
+    <p style="font-size:.65rem;color:var(--txt3);margin-top:8px;">⚠️ Les performances des indices sont simulées à partir de données normalisées à titre indicatif. Pour un backtesting précis, connectez une source de données historiques.</p>`;
+
+  setTimeout(()=>{
+    const ctx = document.getElementById('benchChart')?.getContext('2d');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: monthLabels,
+        datasets: [
+          { label: 'Portefeuille', data: pfPoints, borderColor: '#6c63ff', backgroundColor: 'rgba(108,99,255,.1)', fill: true, tension: .4, borderWidth: 2, pointRadius: 0 },
+          { label: selectedBench, data: benchPoints, borderColor: '#00e5a0', backgroundColor: 'rgba(0,229,160,.06)', fill: true, tension: .4, borderWidth: 2, pointRadius: 0, borderDash: [5,3] }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position:'bottom', labels:{ color:'#7b80a0', font:{family:'Space Grotesk',size:11} } }, tooltip: { mode:'index', intersect:false } },
+        scales: {
+          x: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'#7b80a0',font:{size:10}} },
+          y: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'#7b80a0',font:{size:10},callback:v=>v.toFixed(0)} }
+        }
+      }
+    });
+  }, 80);
+}
+
+function selectBench(name) {
+  selectedBench = name;
+  const panel = document.getElementById('panel-analyse');
+  if (panel && panel.classList.contains('active')) renderAnalyse();
+}
+
+// ── 6. Render panel Analyse ───────────────────────────────────────────
+let _snapshotChart = null;
+function renderAnalyse() {
+  const panel = document.getElementById('panel-analyse');
+  if (!panel) return;
+
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id})));
+  const divPos = allPos.filter(p=>p.div>0);
+
+  // YOC top positions
+  const yocData = divPos.map(p=>({
+    ticker:p.ticker, name:p.name,
+    yoc: calcYOC(p),
+    yield: calcCurrentYield(p),
+    annual: estDiv(p)
+  })).sort((a,b)=>b.yoc-a.yoc);
+
+  panel.innerHTML = `
+    <div style="font-size:.7rem;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+      📊 Analyse Avancée <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+    </div>
+
+    <!-- Yield on Cost -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">💎 Yield on Cost (YOC) — Rendement sur prix d'achat
+        <span style="font-size:.65rem;color:var(--txt3);font-weight:400;">Métrique long terme : dividende / PRU</span>
+      </div>
+      ${yocData.length ? `
+      <table style="width:100%;border-collapse:collapse;font-size:.75rem;">
+        <thead><tr style="color:var(--txt3);">
+          <th style="text-align:left;padding:6px 8px;">Ticker</th>
+          <th style="text-align:right;padding:6px 8px;">YOC (sur PRU)</th>
+          <th style="text-align:right;padding:6px 8px;">Yield actuel</th>
+          <th style="text-align:right;padding:6px 8px;">Div. / an</th>
+          <th style="text-align:right;padding:6px 8px;">Bonus YOC</th>
+        </tr></thead>
+        <tbody>
+        ${yocData.map(d=>{
+          const bonus = d.yoc - d.yield;
+          return `<tr style="border-top:1px solid var(--border);">
+            <td style="padding:8px;font-weight:800;font-family:'DM Mono',monospace;">${d.ticker} <span style="font-size:.62rem;color:var(--txt2);font-weight:400;">${d.name}</span></td>
+            <td style="text-align:right;padding:8px;"><span class="yoc-badge">${fmt(d.yoc,2)}%</span></td>
+            <td style="text-align:right;padding:8px;color:var(--up);font-weight:700;font-family:'DM Mono',monospace;">${fmt(d.yield,2)}%</td>
+            <td style="text-align:right;padding:8px;font-family:'DM Mono',monospace;">${fmtE(d.annual)}</td>
+            <td style="text-align:right;padding:8px;font-weight:700;color:${bonus>0?'var(--up)':'var(--dn)'};font-family:'DM Mono',monospace;">${bonus>0?'+':''}${fmt(bonus,2)}%</td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>
+      <div style="font-size:.65rem;color:var(--txt3);margin-top:10px;">
+        💡 Le <strong>YOC (Yield on Cost)</strong> mesure le rendement réel sur votre coût d'achat initial. Un YOC > yield actuel signifie que votre position a pris de la valeur — vous "touchez" plus que le marché ne vous offrirait aujourd'hui.
+      </div>` : '<div class="history-empty">Aucune position avec dividende enregistré.</div>'}
+    </div>
+
+    <!-- Historique snapshots -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">
+        📸 Historique patrimonial (Snapshots)
+        <button class="snap-btn" onclick="takeSnapshot()">📸 Capturer maintenant</button>
+      </div>
+      ${snapshots.length >= 2 ? `<div class="chart-wrap" style="height:180px;margin-bottom:16px;"><canvas id="snapshotChart"></canvas></div>` : ''}
+      <div class="snapshot-list" id="snapshotListEl">
+        ${snapshots.length === 0 ? '<div class="history-empty">Aucun snapshot enregistré.<br>Cliquez sur "📸 Capturer" pour commencer à tracer l\'évolution de votre patrimoine.</div>' :
+          [...snapshots].reverse().map((s,i)=>{
+            const idx = snapshots.length - 1 - i;
+            const d = new Date(s.ts);
+            return `<div class="snapshot-item">
+              <div><span class="snap-date">${d.toLocaleDateString('fr-FR')} ${d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span></div>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <span class="snap-val">${fmtE(s.total)}</span>
+                <span class="snap-pnl ${cls(s.gain)}">${fmtS(s.gain)} €</span>
+                <button class="snap-del" onclick="deleteSnapshot(${idx})" title="Supprimer">✕</button>
+              </div>
+            </div>`;
+          }).join('')}
+      </div>
+    </div>`;
+
+  // Render sub-components
+  setTimeout(()=>{
+    // Snapshot sparkline chart
+    if (snapshots.length >= 2) {
+      const ctx = document.getElementById('snapshotChart')?.getContext('2d');
+      if (ctx) {
+        if (_snapshotChart) _snapshotChart.destroy();
+        _snapshotChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: snapshots.map(s=>new Date(s.ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})),
+            datasets: [{
+              label: 'Patrimoine total',
+              data: snapshots.map(s=>parseFloat(s.total.toFixed(2))),
+              borderColor: '#c9a96e',
+              backgroundColor: 'rgba(201,169,110,.1)',
+              fill: true, tension: .4, borderWidth: 2, pointRadius: 2,
+              pointBackgroundColor: '#c9a96e'
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display:false }, tooltip: { callbacks:{ label:ctx=>`  ${fmtE(ctx.raw)}` } } },
+            scales: {
+              x: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'#7b80a0',font:{size:10}} },
+              y: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'#7b80a0',font:{size:10},callback:v=>fmtE(v)} }
+            }
+          }
+        });
+      }
+    }
+  }, 80);
+}
+
+// ── 7. Import CSV Courtier (Bulk Import) ─────────────────────────────
+let _bulkRows = [];
+let _bulkBrokerId = BROKERS[0]?.id || '';
+
+function openBulkModal() {
+  _bulkRows = [];
+  _bulkBrokerId = BROKERS[0]?.id || '';
+  document.getElementById('bulkCSVText').value = '';
+  document.getElementById('bulkParseResult').style.display = 'none';
+  document.getElementById('bulkImportBtn').style.display = 'none';
+
+  // Render broker selector
+  const sel = document.getElementById('bulkBrokerSel');
+  sel.innerHTML = BROKERS.map(b=>`<button class="bulk-broker-btn ${b.id===_bulkBrokerId?'sel':''}" onclick="selectBulkBroker('${b.id}',this)">${b.name}</button>`).join('');
+  document.getElementById('bulkModal').classList.add('open');
+}
+function closeBulkModal() { document.getElementById('bulkModal').classList.remove('open'); }
+function selectBulkBroker(id, el) {
+  _bulkBrokerId = id;
+  document.querySelectorAll('.bulk-broker-btn').forEach(b=>{b.classList.remove('sel');});
+  if (el) el.classList.add('sel');
+}
+
+function onBulkDrop(e) {
+  e.preventDefault();
+  document.getElementById('bulkDropZone').classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('bulkCSVText').value = ev.target.result;
+    parseBulkCSV(ev.target.result);
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function parseBulkCSV(text) {
+  const resultDiv = document.getElementById('bulkParseResult');
+  const importBtn = document.getElementById('bulkImportBtn');
+  if (!text.trim()) { resultDiv.style.display='none'; importBtn.style.display='none'; return; }
+
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length < 2) { resultDiv.innerHTML='<div style="color:var(--dn);font-size:.75rem;">Format invalide : au moins 2 lignes requises (en-tête + données).</div>'; resultDiv.style.display='block'; return; }
+
+  const sep = lines[0].includes(';') ? ';' : ',';
+  const headers = lines[0].split(sep).map(h=>h.trim().toLowerCase().replace(/['"]/g,''));
+
+  // Smart column detection
+  const findCol = (...keywords) => {
+    for (const kw of keywords) { const i=headers.findIndex(h=>h.includes(kw)); if(i>=0) return i; }
+    return -1;
+  };
+  const colTicker = findCol('ticker','symbol','isin','libelle','valeur','code');
+  const colQty    = findCol('qty','quantite','quantité','qté','nombre','nb ','qte');
+  const colPrice  = findCol('pru','prix achat','cours achat','average','avg','prix moyen','cost');
+  const colName   = findCol('nom','name','libellé','libelle','designation');
+  const colCur    = findCol('devise','currency','monnaie');
+
+  _bulkRows = [];
+  const rowsHTML = [];
+
+  lines.slice(1).forEach((line, li) => {
+    if (!line.trim()) return;
+    const cells = line.split(sep).map(c=>c.trim().replace(/^["']|["']$/g,''));
+    const ticker = colTicker >= 0 ? cells[colTicker]?.toUpperCase() : '';
+    const qty    = colQty    >= 0 ? parseFloat(cells[colQty]?.replace(',','.')) : NaN;
+    const price  = colPrice  >= 0 ? parseFloat(cells[colPrice]?.replace(',','.')) : NaN;
+    const name   = colName   >= 0 ? cells[colName] : ticker;
+    const cur    = colCur    >= 0 ? cells[colCur] : '€';
+
+    if (!ticker) { rowsHTML.push(`<div class="bulk-parse-row"><span class="bulk-parse-badge bulk-err">SKIP</span><span>Ligne ${li+2} : ticker manquant</span></div>`); return; }
+    if (isNaN(qty) || qty <= 0) { rowsHTML.push(`<div class="bulk-parse-row"><span class="bulk-parse-badge bulk-warn">WARN</span><span>${ticker} — quantité invalide</span></div>`); return; }
+    if (isNaN(price) || price <= 0) { rowsHTML.push(`<div class="bulk-parse-row"><span class="bulk-parse-badge bulk-warn">WARN</span><span>${ticker} — prix manquant (sera 0)</span></div>`); }
+
+    _bulkRows.push({ ticker, qty, avg: isNaN(price)?0:price, name: name||ticker, currency: cur||'€', type:'action', current:0, div:0, alertHigh:0, alertLow:0, target:0, notes:'Import CSV', date: new Date().toISOString().split('T')[0] });
+    rowsHTML.push(`<div class="bulk-parse-row"><span class="bulk-parse-badge bulk-ok">OK</span><span><strong>${ticker}</strong> — Qté: ${qty} · PRU: ${isNaN(price)?'?':fmt(price,2)} ${cur||'€'}</span></div>`);
+  });
+
+  resultDiv.innerHTML = `<div style="font-size:.7rem;font-weight:700;color:var(--txt2);margin-bottom:8px;">${_bulkRows.length} position${_bulkRows.length>1?'s':''} détectée${_bulkRows.length>1?'s':''} sur ${lines.length-1} lignes — Colonnes : ${[colTicker>=0?'Ticker':null,colQty>=0?'Qty':null,colPrice>=0?'Prix':null,colName>=0?'Nom':null].filter(Boolean).join(', ')}</div>` + rowsHTML.join('');
+  resultDiv.style.display = 'block';
+  importBtn.style.display = _bulkRows.length > 0 ? 'inline-flex' : 'none';
+}
+
+function applyBulkImport() {
+  if (!_bulkRows.length || !_bulkBrokerId) return;
+  if (!portfolios[_bulkBrokerId]) portfolios[_bulkBrokerId] = [];
+  let added = 0, updated = 0;
+  _bulkRows.forEach(row => {
+    const existing = portfolios[_bulkBrokerId].findIndex(p=>p.ticker===row.ticker);
+    if (existing >= 0) {
+      // Mettre à jour qty et avg (moyenne pondérée)
+      const old = portfolios[_bulkBrokerId][existing];
+      const totalQty = old.qty + row.qty;
+      const newAvg = (old.avg * old.qty + row.avg * row.qty) / totalQty;
+      old.qty = totalQty; old.avg = parseFloat(newAvg.toFixed(4));
+      updated++;
+    } else {
+      portfolios[_bulkBrokerId].push({...row});
+      added++;
+    }
+  });
+  save(); renderAll();
+  showNotif(`📥 Import terminé`, `${added} ajoutée${added>1?'s':''} · ${updated} mise${updated>1?'s':''} à jour dans ${BROKERS.find(b=>b.id===_bulkBrokerId)?.name}`, 'var(--gold)');
+  closeBulkModal();
+}
+
+// ── 8. Patch switchPanel to handle analyse panel ──────────────────────
+const _origSwitchPanel = switchPanel;
+switchPanel = function(id, btn) {
+  _origSwitchPanel(id, btn);
+  if (id === 'analyse') {
+    loadSnapshots();
+    renderAnalyse();
+  }
+  requestAnimationFrame(initCollapsibleCards);
+};
+
+// ════════════════════════════════════════════════════════════════════
+// END V15 FEATURES
+// ════════════════════════════════════════════════════════════════════
+
+
+// ════════════════════════════════════════════════════════════════════
+// COLLAPSIBLE CARDS — fermer/rouvrir chaque carte
+// ════════════════════════════════════════════════════════════════════
+const _CARD_STATE_KEY = 'pmix_card_states';
+let _cardStatesCache = null; // cache mémoire — évite JSON.parse à chaque toggle
+
+function _loadCardStates() {
+  if (_cardStatesCache) return _cardStatesCache;
+  try { _cardStatesCache = JSON.parse(localStorage.getItem(_CARD_STATE_KEY) || '{}'); }
+  catch { _cardStatesCache = {}; }
+  return _cardStatesCache;
+}
+function _saveCardState(id, collapsed) {
+  const states = _loadCardStates();
+  states[id] = collapsed;
+  // Écriture débouncée pour éviter les writes répétés en cas de clics rapides
+  clearTimeout(_saveCardState._t);
+  _saveCardState._t = setTimeout(() => {
+    try { localStorage.setItem(_CARD_STATE_KEY, JSON.stringify(states)); } catch(e) {}
+  }, 200);
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  const isNowCollapsed = !card.classList.contains('collapsed');
+  card.classList.toggle('collapsed', isNowCollapsed);
+  _saveCardState(id, isNowCollapsed);
+}
+
+// Injecte un bouton toggle dans chaque .card-title, wrappant le contenu dans .card-body
+let _cardIdCounter = 0;
+function initCollapsibleCards() {
+  const states = _loadCardStates();
+  document.querySelectorAll('.card').forEach(card => {
+    // Éviter la double-init
+    if (card.dataset.collapsible === '1') return;
+    card.dataset.collapsible = '1';
+
+    const titleEl = card.querySelector('.card-title');
+    if (!titleEl) return;
+
+    // Générer un ID stable et UNIQUE
+    let cardId = card.id;
+    if (!cardId) {
+      const rawText = titleEl.textContent.trim().slice(0, 30).replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
+      let candidate = 'card_' + rawText;
+      // Suffixe numérique si collision
+      if (document.getElementById(candidate) && document.getElementById(candidate) !== card) {
+        candidate = candidate + '_' + (++_cardIdCounter);
+      }
+      cardId = candidate;
+      card.id = cardId;
+    }
+
+    // Ajouter le bouton toggle dans le card-title
+    const btn = document.createElement('button');
+    btn.className = 'card-toggle';
+    btn.title = 'Réduire / agrandir';
+    btn.innerHTML = '<i class="ct-icon">▾</i>';
+    btn.onclick = (e) => { e.stopPropagation(); toggleCard(cardId); };
+    titleEl.appendChild(btn);
+
+    // Wrapper le contenu (tout sauf le card-title) dans .card-body
+    const children = Array.from(card.children);
+    const toWrap = children.filter(c => c !== titleEl);
+    if (toWrap.length) {
+      const body = document.createElement('div');
+      body.className = 'card-body';
+      toWrap.forEach(c => body.appendChild(c));
+      card.appendChild(body);
+    }
+
+    // Restaurer l'état sauvegardé
+    if (states[cardId]) {
+      card.classList.add('collapsed');
+    }
+  });
+}
+
+// Ré-applique après chaque renderAll / renderOverview / renderBrokerDetail
+const _origRenderAll = renderAll;
+renderAll = function() {
+  _origRenderAll.apply(this, arguments);
+  _cardIdCounter = 0; // reset avant la passe pour les panneaux reconstruits
+  requestAnimationFrame(initCollapsibleCards);
+};
+const _origRenderOverview = renderOverview;
+renderOverview = function() {
+  _origRenderOverview.apply(this, arguments);
+  _cardIdCounter = 0;
+  requestAnimationFrame(initCollapsibleCards);
+};
+
 load();
 const _fxPref = localStorage.getItem('pmix_fx_enabled');
 if (_fxPref !== null) fxEnabled = (_fxPref === '1');
+loadSnapshots();
 renderAll();
+// Auto-snapshot si nouveau jour
+setTimeout(autoSnapshot, 1500);
 
-// Reconnexion cloud automatique si identifiants stockés
-setTimeout(autoReconnect, 800);
+// Reconnexion cloud automatique — attendre que le module Firebase ES soit prêt
+function _waitFirebaseThenReconnect(attempts) {
+  if(window._firebase) { autoReconnect(); return; }
+  if(attempts>20) return; // abandon après ~2s
+  setTimeout(()=>_waitFirebaseThenReconnect(attempts+1), 100);
+}
+_waitFirebaseThenReconnect(0);
 
 // Fetch taux forex (cache 23h, non bloquant)
 fetchFxRates().then(() => { renderKPIs(); renderBrokerCards(); });
@@ -3070,14 +3838,42 @@ setInterval(fetchFxRates, 6 * 60 * 60 * 1000);
 updateBadge('manual');
 </script>
 <!-- ═══════════════════════════════════════════════════════════ -->
-<!-- MODAL COURS MANUELS                                        -->
+<!-- MODAL IMPORT BULK CSV                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bulkModal">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-title">📥 Import CSV Courtier</div>
+    <p style="font-size:.75rem;color:var(--txt2);margin-bottom:14px;line-height:1.6;">Glisse ou colle un fichier CSV exporté par <strong>Boursorama</strong>, <strong>Degiro</strong> ou <strong>Fortuneo</strong>. Les colonnes détectées seront mappées automatiquement.</p>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:.65rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;">Importer dans :</div>
+      <div class="bulk-broker-select" id="bulkBrokerSel"></div>
+    </div>
+    <div class="bulk-import-wrap" id="bulkDropZone"
+      ondragover="event.preventDefault();this.classList.add('dragover');"
+      ondragleave="this.classList.remove('dragover');"
+      ondrop="onBulkDrop(event)">
+      <div class="bulk-import-icon">📂</div>
+      <div class="bulk-import-title">Glisser un CSV ici</div>
+      <div class="bulk-import-sub">ou coller le contenu ci-dessous</div>
+    </div>
+    <textarea class="form-input" id="bulkCSVText" rows="5" placeholder="Coller le contenu CSV ici ou glisser un fichier ci-dessus…" style="font-family:'DM Mono',monospace;font-size:.7rem;resize:vertical;margin-top:10px;" oninput="parseBulkCSV(this.value)"></textarea>
+    <div id="bulkParseResult" style="display:none;" class="bulk-parse-result"></div>
+    <div class="modal-actions" style="margin-top:14px;">
+      <button class="btn-cancel" onclick="closeBulkModal()">Annuler</button>
+      <button id="bulkImportBtn" class="btn-save" style="background:#6c63ff;color:#fff;display:none;" onclick="applyBulkImport()">✅ Importer les positions</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- COURS MANUELS                                              -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 <div class="cours-modal" id="coursModal">
   <div class="cours-box">
     <div class="cours-header">
       <div class="cours-title">
         ✎ Saisie manuelle des cours
-        <span class="cours-title-badge">v11 — Sans API</span>
+        <span class="cours-title-badge">v15.3 — Cache Intelligent</span>
       </div>
       <button onclick="closeCoursModal()" style="background:none;border:none;color:var(--txt2);cursor:pointer;font-size:1.2rem;line-height:1;padding:4px;">✕</button>
     </div>
