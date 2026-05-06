@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Équinoxe v15.3 — Dashboard Patrimonial</title>
+<title>Équinoxe v18 — Dashboard Patrimonial</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script type="module">
@@ -379,6 +379,23 @@ select.form-input{appearance:none;}
 .tx-date{color:var(--txt2);font-size:.68rem;font-family:'DM Mono',monospace;}
 .tx-amount{font-family:'DM Mono',monospace;font-weight:700;}
 
+/* ── TRADE BUTTONS (Achat / Vente par ligne) ── */
+.trade-buy-btn{background:rgba(0,229,160,.15);border:1px solid rgba(0,229,160,.35);color:var(--up);cursor:pointer;padding:3px 8px;border-radius:6px;font-size:.62rem;font-weight:800;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.trade-buy-btn:hover{background:rgba(0,229,160,.28);transform:translateY(-1px);}
+.trade-sell-btn{background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.3);color:var(--dn);cursor:pointer;padding:3px 8px;border-radius:6px;font-size:.62rem;font-weight:800;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.trade-sell-btn:hover{background:rgba(255,77,109,.25);transform:translateY(-1px);}
+
+/* ── TRADE MODAL ── */
+.trade-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px);}
+.trade-modal-overlay.open{display:flex;}
+.trade-modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:22px;padding:28px;width:100%;max-width:420px;animation:modalIn .22s ease;}
+.trade-modal-title{font-size:1rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.trade-modal-subtitle{font-size:.72rem;color:var(--txt2);margin-bottom:22px;}
+.trade-pru-info{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;}
+.trade-pru-item-lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:.6px;color:var(--txt3);margin-bottom:3px;}
+.trade-pru-item-val{font-size:.88rem;font-weight:800;font-family:'DM Mono',monospace;}
+.trade-result-preview{background:var(--bg3);border-radius:10px;padding:12px 16px;margin-top:14px;font-size:.75rem;min-height:44px;display:flex;align-items:center;justify-content:center;color:var(--txt2);}
+
 /* ── ALERT MODAL ── */
 .alert-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 .alert-list{margin-top:12px;}
@@ -558,6 +575,230 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
 .mobile-card-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
 .mobile-stat-lbl{font-size:.6rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
 .mobile-stat-val{font-size:.82rem;font-weight:700;font-family:'DM Mono',monospace;margin-top:2px;}
+
+/* ══════════════════════════════════════════════════
+   MOBILE RESPONSIVE — v16
+   ══════════════════════════════════════════════════ */
+@media(max-width:768px){
+  body{font-size:14px;}
+  .app{padding:0 12px 80px;}
+
+  /* Topbar mobile */
+  .topbar{height:auto;padding:10px 12px;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:200;}
+  .topbar-right{display:flex;flex-wrap:wrap;gap:6px;width:100%;justify-content:flex-end;}
+  .eq-svg{height:42px;}
+  .search-wrap{display:none;} /* Masqué sur mobile — espace limité */
+  #lastUpdateLabel{display:none;}
+  .hbtn{padding:6px 10px;font-size:.7rem;}
+  /* Topbar : ne montrer que les boutons essentiels sur très petit écran */
+  .topbar-right .hbtn.hide-xs{display:none;}
+
+  /* KPI strip : 2 colonnes sur mobile */
+  .kpi-strip{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+  .kpi{padding:14px 14px;}
+  .kpi-val{font-size:1.1rem;}
+  .kpi-lbl{font-size:.6rem;}
+
+  /* Broker cards : scroll horizontal */
+  .broker-cards{display:flex;overflow-x:auto;gap:10px;padding-bottom:6px;scrollbar-width:none;flex-wrap:nowrap;margin-bottom:16px;}
+  .broker-cards::-webkit-scrollbar{display:none;}
+  .b-card{min-width:140px;flex-shrink:0;}
+
+  /* Tab nav : scroll horizontal pleine largeur */
+  .tab-nav{width:100%;max-width:100%;overflow-x:auto;border-radius:12px;}
+  .tab-btn{padding:8px 12px;font-size:.7rem;}
+
+  /* Grids : 1 colonne */
+  .grid-2,.grid-3,.grid-4,.sector-grid,.analysis-grid{grid-template-columns:1fr!important;gap:12px;}
+
+  /* Tableaux : cache les colonnes moins importantes */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{min-width:600px;}
+  /* Sur mobile on peut cacher les colonnes optionnelles */
+  thead th.col-hide-mobile,
+  tbody td.col-hide-mobile{display:none;}
+
+  /* Cards */
+  .card{padding:14px;}
+  .card-title{font-size:.65rem;}
+
+  /* Heatmap : 3 colonnes sur mobile */
+  .heatmap{grid-template-columns:repeat(3,1fr);gap:6px;}
+  .heat-ticker{font-size:.72rem;}
+  .heat-perf{font-size:.8rem;}
+
+  /* Objectifs */
+  .objectifs-grid{grid-template-columns:1fr 1fr;gap:8px;}
+
+  /* Dividendes calendrier : 4 colonnes sur mobile */
+  .div-calendar{grid-template-columns:repeat(4,1fr)!important;gap:4px;}
+  .div-month{min-height:52px;padding:6px 3px;}
+  .div-month-amount{font-size:.65rem;}
+
+  /* Simulateur */
+  .sim-row{grid-template-columns:1fr 1fr!important;}
+  .sim-results{grid-template-columns:1fr 1fr;}
+
+  /* Score diversification */
+  .div-score-card{flex-wrap:wrap;gap:12px;}
+  .div-score-circle{width:48px;height:48px;font-size:1rem;}
+
+  /* Perf summary */
+  .perf-summary{grid-template-columns:1fr 1fr;gap:8px;}
+
+  /* Modal */
+  .modal{border-radius:16px;padding:20px;}
+  .form-row,.form-row-3{grid-template-columns:1fr!important;}
+
+  /* Cours modal */
+  .cours-box{width:100%;max-height:100dvh;border-radius:0;}
+  .cours-modal{padding-top:0;}
+  .cours-grid{grid-template-columns:1fr 1fr!important;}
+
+  /* PF header */
+  .pf-header{flex-direction:column;gap:10px;}
+  .pf-actions{flex-wrap:wrap;gap:6px;}
+  .pf-action-btn{padding:7px 12px;font-size:.7rem;}
+  .pf-total{font-size:1.3rem;}
+
+  /* Bench stats */
+  .bench-stats{grid-template-columns:1fr 1fr;}
+
+  /* Alloc bars : label plus court */
+  .alloc-lbl{flex:0 0 90px;font-size:.72rem;}
+
+  /* WL grid : 1 colonne */
+  .wl-grid{grid-template-columns:1fr;}
+
+  /* Notif : pleine largeur bas de page */
+  .notif{right:8px;left:8px;max-width:none;top:auto;bottom:80px;}
+}
+
+@media(max-width:400px){
+  .kpi-strip{grid-template-columns:1fr;}
+  .kpi-val{font-size:1rem;}
+  .heatmap{grid-template-columns:repeat(2,1fr);}
+  .objectifs-grid{grid-template-columns:1fr;}
+  .sim-row{grid-template-columns:1fr!important;}
+  .bench-stats{grid-template-columns:1fr;}
+  .div-calendar{grid-template-columns:repeat(3,1fr)!important;}
+}
+
+/* Barre de navigation mobile fixe en bas */
+@media(max-width:768px){
+  .mobile-bottom-nav{
+    display:flex;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:rgba(8,9,13,.95);
+    border-top:1px solid var(--border2);
+    backdrop-filter:blur(20px);
+    z-index:300;
+    padding:6px 0 max(6px,env(safe-area-inset-bottom));
+    justify-content:space-around;
+    gap:0;
+  }
+  .mbn-btn{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    background:none;border:none;color:var(--txt3);
+    font-family:inherit;font-size:.58rem;font-weight:600;
+    padding:6px 10px;border-radius:10px;cursor:pointer;
+    transition:all .18s;letter-spacing:.3px;flex:1;
+  }
+  .mbn-btn .mbn-icon{font-size:1.2rem;line-height:1;}
+  .mbn-btn.active{color:var(--txt);}
+  .mbn-btn.active .mbn-icon{filter:drop-shadow(0 0 6px rgba(108,99,255,.5));}
+}
+@media(min-width:769px){
+  .mobile-bottom-nav{display:none!important;}
+}
+
+/* Touch targets min 44px */
+@media(max-width:768px){
+  button,a,.hbtn,.tab-btn,.mbn-btn{min-height:36px;}
+  .del-btn,.edit-btn{padding:8px 10px;font-size:.8rem;}
+  input[type="number"],input[type="text"],select,textarea{font-size:16px!important;} /* évite zoom iOS */
+  .cours-input,.form-input,.inline-price{font-size:16px!important;}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   v17 — NEW FEATURES CSS
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── FLAT TAX SLIDER ── */
+.flattax-config{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;}
+.flattax-config label{font-size:.75rem;color:var(--txt2);white-space:nowrap;}
+.flattax-slider{flex:1;accent-color:#6c63ff;height:4px;}
+.flattax-val{font-size:1rem;font-weight:900;font-family:'DM Mono',monospace;color:#6c63ff;min-width:52px;text-align:center;background:rgba(108,99,255,.12);border-radius:8px;padding:4px 8px;}
+
+/* ── DIVIDEND CALENDAR v2 ── */
+.div-cal-v2{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:10px;}
+.div-cal-month{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:7px 4px;text-align:center;min-height:80px;position:relative;transition:border-color .2s;}
+.div-cal-month.has-payment{border-color:rgba(201,169,110,.35);}
+.div-cal-month.current-month{border-color:rgba(108,99,255,.4);background:rgba(108,99,255,.05);}
+.div-cal-mname{font-size:.58rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.div-cal-amount{font-size:.7rem;font-weight:700;font-family:'DM Mono',monospace;color:var(--gold);}
+.div-cal-tickers{font-size:.52rem;color:var(--txt3);margin-top:3px;line-height:1.4;}
+.div-cal-bar{height:3px;border-radius:2px;background:var(--gold);margin:3px auto 0;transition:width .6s ease;}
+.div-cal-yoc{font-size:.58rem;color:var(--txt2);margin-top:2px;}
+@media(max-width:640px){.div-cal-v2{grid-template-columns:repeat(4,1fr);}}
+
+/* ── CFD / SWING MODULE ── */
+.cfd-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.cfd-kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px;}
+.cfd-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+.cfd-kpi::before{content:'';display:block;height:2px;border-radius:1px;margin-bottom:10px;}
+.cfd-kpi.ck1::before{background:#6c63ff;}
+.cfd-kpi.ck2::before{background:var(--up);}
+.cfd-kpi.ck3::before{background:var(--dn);}
+.cfd-kpi.ck4::before{background:var(--warn);}
+.cfd-kpi-lbl{font-size:.62rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;}
+.cfd-kpi-val{font-size:1.1rem;font-weight:800;font-family:'DM Mono',monospace;}
+.cfd-pos-table{width:100%;border-collapse:collapse;font-size:.75rem;}
+.cfd-pos-table th{color:var(--txt3);font-size:.63rem;text-transform:uppercase;letter-spacing:.8px;padding:6px 8px;text-align:right;border-bottom:1px solid var(--border);}
+.cfd-pos-table th:first-child{text-align:left;}
+.cfd-pos-table td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;text-align:right;}
+.cfd-pos-table td:first-child{text-align:left;}
+.cfd-pos-table tr:hover td{background:rgba(255,255,255,.02);}
+.cfd-badge-long{background:rgba(0,229,160,.15);color:var(--up);font-size:.6rem;padding:2px 7px;border-radius:6px;font-weight:800;}
+.cfd-badge-short{background:rgba(255,77,109,.15);color:var(--dn);font-size:.6rem;padding:2px 7px;border-radius:6px;font-weight:800;}
+.lev-badge{background:rgba(255,214,10,.15);color:var(--warn);font-size:.62rem;padding:2px 6px;border-radius:5px;font-weight:700;font-family:'DM Mono',monospace;}
+.cfd-add-form{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-top:16px;}
+.cfd-form-title{font-size:.75rem;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.cfd-form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.cfd-dir-btns{display:flex;gap:6px;margin-top:4px;}
+.cfd-dir-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--txt2);cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:700;transition:all .2s;}
+.cfd-dir-btn.long.active{background:rgba(0,229,160,.15);border-color:var(--up);color:var(--up);}
+.cfd-dir-btn.short.active{background:rgba(255,77,109,.15);border-color:var(--dn);color:var(--dn);}
+.cfd-margin-warn{font-size:.65rem;color:var(--warn);margin-top:6px;display:none;}
+.cfd-pl-live{font-weight:800;font-family:'DM Mono',monospace;}
+.cfd-closed-row{opacity:.55;}
+
+/* ── BENCHMARK COMPARISON inline badges ── */
+.bench-inline{font-size:.6rem;padding:2px 6px;border-radius:5px;font-weight:700;margin-left:6px;}
+.bench-outperf{background:rgba(0,229,160,.15);color:var(--up);}
+.bench-underperf{background:rgba(255,77,109,.15);color:var(--dn);}
+
+/* ── DONUT CHARTS for allocation ── */
+.alloc-donut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px;}
+.alloc-donut-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.alloc-donut-title{font-size:.65rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.alloc-donut-wrap{height:160px;position:relative;}
+
+/* ── ALERT POLLING BADGE ── */
+.alert-poll-badge{display:flex;align-items:center;gap:5px;font-size:.65rem;color:var(--txt2);padding:4px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;}
+.alert-poll-dot{width:6px;height:6px;border-radius:50%;background:var(--up);animation:pulse 2s infinite;}
+
+/* ── CSV BROKER TEMPLATES ── */
+.csv-template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:16px;}
+.csv-broker-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;}
+.csv-broker-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.csv-broker-card.selected{border-color:rgba(108,99,255,.5);background:rgba(108,99,255,.07);}
+.csv-broker-name{font-weight:800;font-size:.9rem;margin-bottom:4px;}
+.csv-broker-cols{font-size:.65rem;color:var(--txt3);line-height:1.5;}
+.csv-file-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);color:var(--txt);padding:10px 16px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:600;transition:all .2s;width:100%;margin-bottom:10px;}
+.csv-file-btn:hover{background:var(--bg4);}
+.csv-file-input{display:none;}
 </style>
 </head>
 <body>
@@ -614,14 +855,14 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
     </div>
     <button class="hbtn" onclick="refreshPricesWithCache()" title="Actualiser les cours (cache 4h)">🔄 Actualiser</button>
     <span style="font-size:.68rem;color:var(--txt3);font-family:'DM Mono',monospace;" id="lastUpdateLabel"></span>
-    <button class="hbtn" id="fxBtn" onclick="toggleForex()" title="Conversion forex EUR">💱 Forex…</button>
+    <button class="hbtn hide-xs" id="fxBtn" onclick="toggleForex()" title="Conversion forex EUR">💱 Forex…</button>
     <button class="hbtn eye-btn" id="eyeBtn" onclick="togglePrivate()" title="Mode discret — flouter les montants">👁️</button>
-    <div class="sync-badge" id="syncBadge" onclick="openSyncModal()" title="Synchronisation cloud multi-appareils">
+    <div class="sync-badge hide-xs" id="syncBadge" onclick="openSyncModal()" title="Synchronisation cloud multi-appareils">
       <div class="sync-dot" id="syncDot" style="background:var(--txt3)"></div>
       <span id="syncText">Cloud</span>
     </div>
-    <button class="hbtn" onclick="openAlertModal()">🔔 Alertes</button>
-    <button class="hbtn" onclick="switchPanel('settings')">⚙️ Brokers</button>
+    <button class="hbtn hide-xs" onclick="openAlertModal()">🔔 Alertes</button>
+    <button class="hbtn hide-xs" onclick="switchPanel('settings')">⚙️ Brokers</button>
   </div>
 </div>
 
@@ -635,6 +876,8 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
   <div class="panel active" id="panel-overview"></div>
   <div class="panel" id="panel-watchlist"></div>
   <div class="panel" id="panel-analyse"></div>
+  <div class="panel" id="panel-fiscal"></div>
+  <div class="panel" id="panel-cfd"></div>
   <div class="panel" id="panel-settings">
     <div class="io-section">
       <div class="io-title">🔄 Remise à zéro</div>
@@ -1417,6 +1660,8 @@ function renderTabNav() {
     BROKERS.map(b=>`<button class="tab-btn" id="tab-broker-${b.id}" onclick="switchPanel('broker-${b.id}',this)"><span class="tab-dot" style="background:${b.color}"></span>${b.name}</button>`).join('')+
     `<button class="tab-btn" id="tab-watchlist" onclick="switchPanel('watchlist',this)">👁️ Watchlist <span style="background:rgba(201,169,110,.2);color:var(--gold);font-size:.6rem;padding:1px 6px;border-radius:8px;margin-left:4px;">${watchlist.length}</span></button>`+
     `<button class="tab-btn" id="tab-analyse" onclick="switchPanel('analyse',this)">📊 Analyse</button>`+
+    `<button class="tab-btn" id="tab-fiscal" onclick="switchPanel('fiscal',this)">🏛️ Fiscal</button>`+
+    `<button class="tab-btn" id="tab-cfd" onclick="switchPanel('cfd',this)">⚡ CFD/Swing</button>`+
     `<button class="tab-btn" id="tab-settings" onclick="switchPanel('settings',this)">⚙️ Brokers</button>`;
 }
 
@@ -1754,25 +1999,7 @@ function renderHeatmapCells(allPos) {
 function renderDivCalendar(divPos) {
   const wrap=document.getElementById('divCalendarWrap');
   if(!wrap) return;
-  const monthNames=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  // Revenus mensuels estimés (divisé par 12, distribution uniformisée) — une seule passe O(n)
-  const monthly=Array(12).fill(0);
-  divPos.forEach(p=>{ const share=estDiv(p)/12; for(let i=0;i<12;i++) monthly[i]+=share; });
-  const maxM=Math.max(...monthly,0.01);
-  const totalAnnual=monthly.reduce((a,v)=>a+v,0);
-
-  wrap.innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-      <span style="font-size:.65rem;color:var(--txt2);">Projection des revenus mensuels</span>
-      <span style="font-size:.7rem;color:var(--gold);font-family:'DM Mono',monospace;">${fmtE(totalAnnual/12)} / mois moy.</span>
-    </div>
-    <div class="div-calendar">
-      ${monthNames.map((m,i)=>`<div class="div-month">
-        <div class="div-month-name">${m}</div>
-        <div class="div-month-amount">${monthly[i]>0?fmtE(monthly[i]):'-'}</div>
-        <div class="div-month-bar" style="width:${monthly[i]/maxM*80}%;"></div>
-      </div>`).join('')}
-    </div>`;
+  renderDividendCalendarV2(wrap);
 }
 
 // ── Simulateur Et si ? ──
@@ -2143,6 +2370,8 @@ function renderSortableTable(containerId, positions, brokerId, showBroker) {
       target:brokerId?`<td style="color:${targetDist===null?'var(--txt3)':targetDist>=0?'var(--up)':'var(--dn)'};">${targetDist!==null?fmtSPct(targetDist):'—'}</td>`:'',
       div:brokerId?`<td style="color:${p.div?'var(--gold)':'var(--txt3)'};" class="private">${p.div?fmtE(estDiv(p)):'—'}</td>`:'',
       actions:brokerId?`<td><div class="action-cell">
+        <button class="trade-buy-btn" onclick="openTradeModal('${brokerId}',${posIdx},'buy')">🟢 Achat</button>
+        <button class="trade-sell-btn" onclick="openTradeModal('${brokerId}',${posIdx},'sell')">🔴 Vente</button>
         <button class="edit-btn" onclick="openEditPosModal('${brokerId}',${posIdx})">✏️</button>
         <button class="del-btn" onclick="deletePos('${brokerId}',${posIdx})">✕</button>
         </div></td>`:'',
@@ -2167,14 +2396,163 @@ function sortTbl(cid,key,brokerId,showBroker) {
 // ════════════════════════════════════════════════════════════════════
 function renderTxFor(id) {
   const el=document.getElementById('txList-'+id); if(!el) return;
-  const txs=transactions.filter(t=>t.broker===id).slice(-5).reverse();
+  const txs=transactions.filter(t=>t.broker===id).slice(-10).reverse();
   if(!txs.length){el.innerHTML='<div style="color:var(--txt3);font-size:.78rem;padding:12px 0">Aucune transaction enregistrée.</div>';return;}
-  el.innerHTML=txs.map(t=>`<div class="tx-item">
-    <span class="tx-badge ${t.type==='buy'?'tx-buy':'tx-sell'}">${t.type==='buy'?'ACHAT':'VENTE'}</span>
-    <div><strong>${t.ticker}</strong> <span style="color:var(--txt2);font-size:.68rem">${t.notes||''}</span></div>
-    <span class="tx-date">${t.date}</span>
-    <span class="tx-amount">${fmt(t.qty)} × ${fmt(t.price)} €</span>
-  </div>`).join('');
+  el.innerHTML=txs.map(t=>{
+    const isBuy=t.type==='buy';
+    const montant=t.qty*t.price;
+    let extraInfo='';
+    if(isBuy && t.pruAfter!==undefined){
+      const delta=t.pruAfter-t.pruBefore;
+      extraInfo=`<span style="font-size:.62rem;color:${delta>0?'var(--dn)':'var(--up)'};">PRU ${delta>0?'+':''}${fmt(delta,2)} → ${fmt(t.pruAfter,2)} €</span>`;
+    } else if(!isBuy && t.pnl!==undefined){
+      extraInfo=`<span style="font-size:.62rem;color:${t.pnl>=0?'var(--up)':'var(--dn)'};">PnL ${t.pnl>=0?'+':''}${fmtE(t.pnl)}</span>`;
+    }
+    return `<div class="tx-item">
+      <span class="tx-badge ${isBuy?'tx-buy':'tx-sell'}">${isBuy?'ACHAT':'VENTE'}</span>
+      <div>
+        <strong>${t.ticker}</strong>
+        ${extraInfo ? `<span style="margin-left:6px;">${extraInfo}</span>` : ''}
+        ${t.notes?`<span style="color:var(--txt2);font-size:.65rem;margin-left:6px;">${t.notes}</span>`:''}
+      </div>
+      <span class="tx-date">${t.date}</span>
+      <span class="tx-amount" style="color:${isBuy?'var(--txt)':'var(--dn)'};">${isBuy?'+':'-'}${fmt(t.qty)} × ${fmt(t.price,2)} € = ${fmtE(montant)}</span>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════════════
+// TRADE MODAL — Achat / Vente par ligne
+// ════════════════════════════════════════════════════════════════════
+let _tradeBrokerId=null, _tradePosIdx=null, _tradeType=null;
+
+function openTradeModal(brokerId, posIdx, type) {
+  const pos=(portfolios[brokerId]||[])[posIdx]; if(!pos) return;
+  _tradeBrokerId=brokerId; _tradePosIdx=posIdx; _tradeType=type;
+  const isBuy=type==='buy';
+  const b=BROKERS.find(x=>x.id===brokerId);
+  const overlay=document.getElementById('tradeModalOverlay');
+
+  document.getElementById('tradeModalTitle').innerHTML=
+    isBuy?`<span style="color:var(--up)">🟢 Achat</span> — ${pos.ticker}`
+         :`<span style="color:var(--dn)">🔴 Vente</span> — ${pos.ticker}`;
+  document.getElementById('tradeModalSubtitle').textContent=
+    `${pos.name} · Broker : ${b?b.name:brokerId}`;
+
+  // PRU info bar
+  document.getElementById('tradePruCurrent').textContent=fmt(pos.avg,2)+' '+pos.currency;
+  document.getElementById('tradeQtyCurrent').textContent=fmt(pos.qty,pos.qty%1===0?0:4);
+  document.getElementById('tradeCoursCurrent').textContent=fmt(pos.current,2)+' '+pos.currency;
+
+  // Default price = current cours
+  document.getElementById('tradeQtyInput').value='';
+  document.getElementById('tradePriceInput').value=fmt(pos.current,2);
+  document.getElementById('tradeDateInput').value=new Date().toISOString().slice(0,10);
+  document.getElementById('tradeNotesInput').value='';
+
+  // Labels
+  document.getElementById('tradeQtyLabel').textContent=isBuy?'Quantité achetée':'Quantité vendue';
+  document.getElementById('tradePriceLabel').textContent=isBuy?'Prix d\'exécution (achat)':'Prix d\'exécution (vente)';
+  const btn=document.getElementById('tradeConfirmBtn');
+  btn.style.background=isBuy?'var(--up)':'var(--dn)'; btn.style.color='#000';
+  btn.textContent=isBuy?'✅ Confirmer l\'achat':'💸 Confirmer la vente';
+
+  // Max qty hint for sell
+  const maxHint=document.getElementById('tradeMaxQtyHint');
+  maxHint.textContent=isBuy?'':`Max : ${fmt(pos.qty,pos.qty%1===0?0:4)} titres`;
+  maxHint.style.color='var(--dn)';
+
+  updateTradePreview();
+  overlay.classList.add('open');
+}
+
+function closeTradeModal(){
+  document.getElementById('tradeModalOverlay').classList.remove('open');
+  _tradeBrokerId=null; _tradePosIdx=null; _tradeType=null;
+}
+
+function updateTradePreview() {
+  const isBuy=_tradeType==='buy';
+  const pos=_tradeBrokerId&&_tradePosIdx!==null?(portfolios[_tradeBrokerId]||[])[_tradePosIdx]:null;
+  if(!pos){document.getElementById('tradeResultPreview').textContent='—';return;}
+
+  const qty=parseFloat(document.getElementById('tradeQtyInput').value)||0;
+  const price=parseFloat(String(document.getElementById('tradePriceInput').value).replace(',','.'))||0;
+  const preview=document.getElementById('tradeResultPreview');
+
+  if(qty<=0||price<=0){preview.innerHTML='<span style="color:var(--txt3)">Saisissez une quantité et un prix pour voir le résultat.</span>';return;}
+
+  if(isBuy){
+    const newQty=pos.qty+qty;
+    const newPru=(pos.qty*pos.avg + qty*price)/newQty;
+    const montant=qty*price;
+    preview.innerHTML=`
+      <div style="width:100%;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;text-align:center;">
+        <div><div style="font-size:.6rem;color:var(--txt3)">Montant</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:var(--txt)">${fmtE(montant)}</div></div>
+        <div><div style="font-size:.6rem;color:var(--txt3)">Nouveau PRU</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:var(--warn)">${fmt(newPru,2)} ${pos.currency}</div></div>
+        <div><div style="font-size:.6rem;color:var(--txt3)">Δ PRU</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:${newPru>pos.avg?'var(--dn)':'var(--up)'}">${newPru>pos.avg?'+':''}${fmt(newPru-pos.avg,2)}</div></div>
+        <div><div style="font-size:.6rem;color:var(--txt3)">Nouvelle Qté</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:var(--up)">${fmt(newQty,newQty%1===0?0:4)}</div></div>
+      </div>`;
+  } else {
+    if(qty>pos.qty){
+      preview.innerHTML=`<span style="color:var(--dn)">⚠️ Quantité supérieure au solde (${fmt(pos.qty,pos.qty%1===0?0:4)} titres)</span>`;return;
+    }
+    const newQty=pos.qty-qty;
+    const pnlGain=(price-pos.avg)*qty;
+    const pnlPct=pos.avg>0?(price-pos.avg)/pos.avg*100:0;
+    const montant=qty*price;
+    const isPositive=pnlGain>=0;
+    preview.innerHTML=`
+      <div style="width:100%;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;text-align:center;">
+        <div><div style="font-size:.6rem;color:var(--txt3)">Produit vente</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:var(--txt)">${fmtE(montant)}</div></div>
+        <div><div style="font-size:.6rem;color:var(--txt3)">PnL réalisé</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:${isPositive?'var(--up)':'var(--dn)'}">${isPositive?'+':''}${fmtE(pnlGain)}</div></div>
+        <div><div style="font-size:.6rem;color:var(--txt3)">Perf.</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:${isPositive?'var(--up)':'var(--dn)'}">${isPositive?'+':''}${fmt(pnlPct,2)}%</div></div>
+        <div><div style="font-size:.6rem;color:var(--txt3)">Titres restants</div><div style="font-weight:800;font-family:'DM Mono',monospace;color:${newQty>0?'var(--txt)':'var(--dn)'}">${fmt(newQty,newQty%1===0?0:4)}</div></div>
+      </div>`;
+  }
+}
+
+function confirmTrade() {
+  const isBuy=_tradeType==='buy';
+  const pos=_tradeBrokerId&&_tradePosIdx!==null?(portfolios[_tradeBrokerId]||[])[_tradePosIdx]:null;
+  if(!pos) return;
+
+  const qty=parseFloat(document.getElementById('tradeQtyInput').value)||0;
+  const price=parseFloat(String(document.getElementById('tradePriceInput').value).replace(',','.'))||0;
+  const date=document.getElementById('tradeDateInput').value||new Date().toISOString().slice(0,10);
+  const notes=document.getElementById('tradeNotesInput').value.trim();
+
+  if(qty<=0||price<=0){showNotif('⚠️ Saisie incomplète','Quantité et prix requis','var(--dn)');return;}
+
+  if(isBuy){
+    const newQty=pos.qty+qty;
+    const newPru=(pos.qty*pos.avg + qty*price)/newQty;
+    const prevPru=pos.avg;
+    pos.qty=parseFloat(newQty.toFixed(8));
+    pos.avg=parseFloat(newPru.toFixed(4));
+    pos.current=parseFloat(price.toFixed(4));
+    transactions.push({type:'buy',broker:_tradeBrokerId,ticker:pos.ticker,qty,price,date,notes,pruBefore:prevPru,pruAfter:pos.avg});
+    showNotif(`🟢 Achat confirmé`,`${pos.ticker} · +${fmt(qty)} × ${fmt(price,2)} € · Nouveau PRU : ${fmt(pos.avg,2)} €`,'var(--up)');
+  } else {
+    if(qty>pos.qty){showNotif('⚠️ Quantité trop élevée',`Solde : ${fmt(pos.qty)} titres`,'var(--dn)');return;}
+    const newQty=parseFloat((pos.qty-qty).toFixed(8));
+    const pnlGain=(price-pos.avg)*qty;
+    transactions.push({type:'sell',broker:_tradeBrokerId,ticker:pos.ticker,qty,price,date,notes,pru:pos.avg,pnl:parseFloat(pnlGain.toFixed(2))});
+    if(newQty<=0){
+      // Position soldée entièrement → supprimer
+      portfolios[_tradeBrokerId].splice(_tradePosIdx,1);
+      showNotif(`🔴 Position soldée`,`${pos.ticker} · ${fmt(qty)} × ${fmt(price,2)} € · PnL : ${pnlGain>=0?'+':''}${fmtE(pnlGain)}`,'var(--dn)');
+    } else {
+      pos.qty=newQty;
+      pos.current=parseFloat(price.toFixed(4));
+      showNotif(`🔴 Vente enregistrée`,`${pos.ticker} · -${fmt(qty)} × ${fmt(price,2)} € · Restant : ${fmt(newQty)} titres`,'var(--dn)');
+    }
+  }
+
+  save();
+  closeTradeModal();
+  renderAll();
+  renderBrokerDetail(_tradeBrokerId||'');
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -3599,13 +3977,79 @@ function renderAnalyse() {
 // ── 7. Import CSV Courtier (Bulk Import) ─────────────────────────────
 let _bulkRows = [];
 let _bulkBrokerId = BROKERS[0]?.id || '';
+let _csvTemplate = 'auto';
+
+// Mapping des colonnes par courtier
+const CSV_BROKER_MAPS = {
+  auto: {}, // detection automatique
+  xtb: {
+    ticker: ['symbol','ticker','instrument'],
+    qty:    ['quantity','qty','shares'],
+    price:  ['avg.price','average price','avg price','open price','pru'],
+    name:   ['name','instrument name'],
+    cur:    ['currency','devise'],
+  },
+  tr: {
+    ticker: ['isin','symbol','ticker'],
+    qty:    ['shares','quantity','nombre'],
+    price:  ['avg. buy price','avg buy price','average buy','prix moyen','pru'],
+    name:   ['name','nom','security name','libellé'],
+    cur:    ['currency','devise'],
+  },
+  eb: {
+    ticker: ['valeur','ticker','code','isin','libellé'],
+    qty:    ['qté','quantité','qty','nombre'],
+    price:  ['pru','prix de revient unitaire','cours achat','prix moyen'],
+    name:   ['libellé','valeur','nom','name'],
+    cur:    ['devise','currency'],
+  },
+  bourso: {
+    ticker: ['libellé','libelle','ticker','code'],
+    qty:    ['quantité','quantite','nombre'],
+    price:  ['pru','prix de revient','cours d\'achat','prix achat'],
+    name:   ['libellé','libelle','nom'],
+    cur:    ['devise','currency'],
+  },
+  degiro: {
+    ticker: ['symbole','symbol','isin'],
+    qty:    ['quantité','quantite','nombre'],
+    price:  ['prix','cours','avg price','pru'],
+    name:   ['produit','product','nom','name'],
+    cur:    ['devise','currency'],
+  },
+};
+
+function selectCSVTemplate(template, el) {
+  _csvTemplate = template;
+  document.querySelectorAll('.csv-broker-card').forEach(c=>c.classList.remove('selected'));
+  if(el) el.classList.add('selected');
+  // Re-parse si du texte est déjà présent
+  const txt = document.getElementById('bulkCSVText')?.value;
+  if(txt && txt.trim()) parseBulkCSV(txt);
+}
+
+function onCSVFileSelect(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('bulkCSVText').value = ev.target.result;
+    parseBulkCSV(ev.target.result);
+  };
+  reader.readAsText(file, 'UTF-8');
+}
 
 function openBulkModal() {
   _bulkRows = [];
   _bulkBrokerId = BROKERS[0]?.id || '';
+  _csvTemplate = 'auto';
   document.getElementById('bulkCSVText').value = '';
   document.getElementById('bulkParseResult').style.display = 'none';
   document.getElementById('bulkImportBtn').style.display = 'none';
+  // Reset template selection
+  document.querySelectorAll('.csv-broker-card').forEach(c=>c.classList.remove('selected'));
+  const autoCard=document.querySelector('[data-template="auto"]');
+  if(autoCard) autoCard.classList.add('selected');
 
   // Render broker selector
   const sel = document.getElementById('bulkBrokerSel');
@@ -3640,19 +4084,40 @@ function parseBulkCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   if (lines.length < 2) { resultDiv.innerHTML='<div style="color:var(--dn);font-size:.75rem;">Format invalide : au moins 2 lignes requises (en-tête + données).</div>'; resultDiv.style.display='block'; return; }
 
-  const sep = lines[0].includes(';') ? ';' : ',';
-  const headers = lines[0].split(sep).map(h=>h.trim().toLowerCase().replace(/['"]/g,''));
+  // Auto-detect separator
+  const sep = lines[0].includes(';') ? ';' : lines[0].includes('\t') ? '\t' : ',';
+  const headers = lines[0].split(sep).map(h=>h.trim().toLowerCase().replace(/['"]/g,'').replace(/[\uFEFF]/g,''));
 
-  // Smart column detection
-  const findCol = (...keywords) => {
-    for (const kw of keywords) { const i=headers.findIndex(h=>h.includes(kw)); if(i>=0) return i; }
+  // Choisir le mapping selon le template
+  const templateMap = CSV_BROKER_MAPS[_csvTemplate] || {};
+  const hasTemplateMap = Object.keys(templateMap).length > 0;
+
+  const findCol = (templateKeys, ...fallbacks) => {
+    // D'abord essayer les clés du template
+    if(hasTemplateMap && templateKeys) {
+      for(const kw of templateKeys){const i=headers.findIndex(h=>h===kw||h.includes(kw));if(i>=0)return i;}
+    }
+    // Puis les fallbacks génériques
+    for(const kw of fallbacks){const i=headers.findIndex(h=>h.includes(kw));if(i>=0)return i;}
     return -1;
   };
-  const colTicker = findCol('ticker','symbol','isin','libelle','valeur','code');
-  const colQty    = findCol('qty','quantite','quantité','qté','nombre','nb ','qte');
-  const colPrice  = findCol('pru','prix achat','cours achat','average','avg','prix moyen','cost');
-  const colName   = findCol('nom','name','libellé','libelle','designation');
-  const colCur    = findCol('devise','currency','monnaie');
+
+  const tmap = templateMap;
+  const colTicker = findCol(tmap.ticker,'ticker','symbol','isin','libelle','valeur','code');
+  const colQty    = findCol(tmap.qty,'qty','quantite','quantité','qté','nombre','shares');
+  const colPrice  = findCol(tmap.price,'pru','prix achat','cours achat','average','avg','prix moyen','cost');
+  const colName   = findCol(tmap.name,'nom','name','libellé','libelle','designation','produit');
+  const colCur    = findCol(tmap.cur,'devise','currency','monnaie');
+
+  // Auto-détection du courtier
+  let detectedBroker = '';
+  if(_csvTemplate==='auto') {
+    const h0=headers.join(',');
+    if(h0.includes('avg.price')||h0.includes('avg price')||h0.includes('open price')) detectedBroker='XTB';
+    else if(h0.includes('avg. buy')||h0.includes('avg buy')) detectedBroker='Trade Republic';
+    else if(h0.includes('pru')||h0.includes('prix de revient')) detectedBroker='Easybourse/Fortuneo';
+    else if(h0.includes('produit')||h0.includes('symbole')) detectedBroker='Degiro';
+  }
 
   _bulkRows = [];
   const rowsHTML = [];
@@ -3660,9 +4125,9 @@ function parseBulkCSV(text) {
   lines.slice(1).forEach((line, li) => {
     if (!line.trim()) return;
     const cells = line.split(sep).map(c=>c.trim().replace(/^["']|["']$/g,''));
-    const ticker = colTicker >= 0 ? cells[colTicker]?.toUpperCase() : '';
-    const qty    = colQty    >= 0 ? parseFloat(cells[colQty]?.replace(',','.')) : NaN;
-    const price  = colPrice  >= 0 ? parseFloat(cells[colPrice]?.replace(',','.')) : NaN;
+    const ticker = colTicker >= 0 ? cells[colTicker]?.toUpperCase().replace(/\s+/g,'') : '';
+    const qty    = colQty    >= 0 ? parseFloat(String(cells[colQty]||'0').replace(',','.').replace(/\s/g,'')) : NaN;
+    const price  = colPrice  >= 0 ? parseFloat(String(cells[colPrice]||'0').replace(',','.').replace(/\s/g,'')) : NaN;
     const name   = colName   >= 0 ? cells[colName] : ticker;
     const cur    = colCur    >= 0 ? cells[colCur] : '€';
 
@@ -3674,7 +4139,8 @@ function parseBulkCSV(text) {
     rowsHTML.push(`<div class="bulk-parse-row"><span class="bulk-parse-badge bulk-ok">OK</span><span><strong>${ticker}</strong> — Qté: ${qty} · PRU: ${isNaN(price)?'?':fmt(price,2)} ${cur||'€'}</span></div>`);
   });
 
-  resultDiv.innerHTML = `<div style="font-size:.7rem;font-weight:700;color:var(--txt2);margin-bottom:8px;">${_bulkRows.length} position${_bulkRows.length>1?'s':''} détectée${_bulkRows.length>1?'s':''} sur ${lines.length-1} lignes — Colonnes : ${[colTicker>=0?'Ticker':null,colQty>=0?'Qty':null,colPrice>=0?'Prix':null,colName>=0?'Nom':null].filter(Boolean).join(', ')}</div>` + rowsHTML.join('');
+  const detectedLabel = detectedBroker ? ` — <span style="color:var(--up);font-weight:700;">Détecté : ${detectedBroker}</span>` : '';
+  resultDiv.innerHTML = `<div style="font-size:.7rem;font-weight:700;color:var(--txt2);margin-bottom:8px;">${_bulkRows.length} position${_bulkRows.length>1?'s':''} détectée${_bulkRows.length>1?'s':''} sur ${lines.length-1} lignes — Colonnes : ${[colTicker>=0?'Ticker':null,colQty>=0?'Qty':null,colPrice>=0?'Prix':null,colName>=0?'Nom':null].filter(Boolean).join(', ')}${detectedLabel}</div>` + rowsHTML.join('');
   resultDiv.style.display = 'block';
   importBtn.style.display = _bulkRows.length > 0 ? 'inline-flex' : 'none';
 }
@@ -3710,11 +4176,1040 @@ switchPanel = function(id, btn) {
     loadSnapshots();
     renderAnalyse();
   }
+  if (id === 'fiscal') {
+    renderFiscal();
+  }
+  if (id === 'cfd') {
+    renderCFD();
+  }
   requestAnimationFrame(initCollapsibleCards);
 };
 
+// ── 9. Onglet Fiscal ──────────────────────────────────────────────────
+function renderFiscal() {
+  const panel = document.getElementById('panel-fiscal');
+  if (!panel) return;
+
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id,bName:BROKERS.find(x=>x.id===b.id)?.name||b.id})));
+
+  // Calcul des PV latentes
+  let totalGainBrut = 0, totalGainCTO = 0, totalGainPEA = 0;
+  const pvLines = allPos.map(p=>{
+    const r = pnl(p);
+    const gain = r.gain;
+    const isPEA = p.bId === 'EB' || p.notes?.toLowerCase().includes('pea');
+    totalGainBrut += gain;
+    if(isPEA) totalGainPEA += gain; else totalGainCTO += gain;
+    return { ...p, gain, gainPct: r.pct, isPEA };
+  }).sort((a,b)=>b.gain-a.gain);
+
+  // Flat tax 30% sur CTO uniquement (PEA exonéré après 5 ans)
+  const pvPositivesCTO = pvLines.filter(p=>!p.isPEA && p.gain>0).reduce((s,p)=>s+p.gain,0);
+  const flatTax30 = pvPositivesCTO * 0.30;
+  const pvPositivesPEA = pvLines.filter(p=>p.isPEA && p.gain>0).reduce((s,p)=>s+p.gain,0);
+  const taxPEAEstim = pvPositivesPEA * 0.172; // Prélèvements sociaux 17.2% après 5 ans
+
+  // Dividendes estimés annuels
+  const divAnnual = totalDividends();
+  const divTax = divAnnual * 0.30; // Flat tax dividendes CTO
+
+  panel.innerHTML = `
+  <div style="font-size:.7rem;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+    🏛️ Onglet Fiscal <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+    <span style="font-size:.6rem;color:var(--txt3);text-transform:none;letter-spacing:0;font-weight:400;">Estimations indicatives — consulter un CGP pour situation réelle</span>
+  </div>
+
+  <!-- KPI Fiscal -->
+  <div class="perf-summary" style="margin-bottom:20px;">
+    <div class="perf-box">
+      <div class="perf-box-val ${cls(totalGainBrut)}">${fmtS(totalGainBrut)} €</div>
+      <div class="perf-box-lbl">PV latentes totales</div>
+    </div>
+    <div class="perf-box">
+      <div class="perf-box-val ${cls(totalGainCTO)}">${fmtS(totalGainCTO)} €</div>
+      <div class="perf-box-lbl">PV latentes CTO</div>
+    </div>
+    <div class="perf-box">
+      <div class="perf-box-val ${cls(totalGainPEA)}">${fmtS(totalGainPEA)} €</div>
+      <div class="perf-box-lbl">PV latentes PEA (est.)</div>
+    </div>
+    <div class="perf-box" style="border:1px solid rgba(255,77,109,.2);">
+      <div class="perf-box-val" style="color:var(--dn)">${fmtE(flatTax30)}</div>
+      <div class="perf-box-lbl">Flat tax 30% CTO (si cession)</div>
+    </div>
+    <div class="perf-box" style="border:1px solid rgba(255,214,10,.2);">
+      <div class="perf-box-val" style="color:var(--warn)">${fmtE(taxPEAEstim)}</div>
+      <div class="perf-box-lbl">PS 17.2% PEA (est.)</div>
+    </div>
+    <div class="perf-box" style="border:1px solid rgba(255,77,109,.15);">
+      <div class="perf-box-val" style="color:var(--dn)">${fmtE(divTax)}</div>
+      <div class="perf-box-lbl">Flat tax 30% div. annuels</div>
+    </div>
+  </div>
+
+  <!-- Simulateur flat tax -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">🧮 Simulateur Flat Tax 30%</div>
+    <div class="sim-row" style="margin-bottom:14px;">
+      <div class="sim-input-wrap">
+        <label class="sim-lbl">Montant de la plus-value réalisée (€)</label>
+        <input class="sim-input" type="number" id="ftPV" placeholder="ex: 5000" oninput="calcFlatTax()">
+      </div>
+      <div class="sim-input-wrap">
+        <label class="sim-lbl">Abattement / pertes passées (€)</label>
+        <input class="sim-input" type="number" id="ftAbat" placeholder="0" value="0" oninput="calcFlatTax()">
+      </div>
+      <div class="sim-input-wrap">
+        <label class="sim-lbl">Enveloppe</label>
+        <select class="sim-input" id="ftEnv" onchange="calcFlatTax()">
+          <option value="cto">CTO — Flat Tax 30%</option>
+          <option value="pea">PEA — PS 17.2% seulement</option>
+        </select>
+      </div>
+    </div>
+    <div class="sim-results" id="flatTaxResults">
+      <div class="sim-res-box" style="grid-column:1/-1;color:var(--txt3);font-size:.75rem;">Saisissez un montant pour simuler l'impôt.</div>
+    </div>
+  </div>
+
+  <!-- Tableau PV latentes par position -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">📋 Plus-values latentes par position
+      <span style="font-size:.6rem;color:var(--txt3);">Trié par gain décroissant</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left;">Titre</th>
+            <th>Broker</th>
+            <th>PV latente (€)</th>
+            <th>PV (%)</th>
+            <th>Enveloppe</th>
+            <th>Flat Tax estimée</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${pvLines.map(p=>{
+            const tax = p.gain > 0 ? (p.isPEA ? p.gain * 0.172 : p.gain * 0.30) : 0;
+            return `<tr>
+              <td><div class="t-ticker">${p.ticker}</div><div class="t-name">${p.name||''}</div></td>
+              <td style="text-align:center;"><span style="${pillStyle(p.bId)}">${p.bName}</span></td>
+              <td><span class="${cls(p.gain)}">${fmtS(p.gain)} €</span></td>
+              <td><span class="${cls(p.gainPct)}">${fmtSPct(p.gainPct)}</span></td>
+              <td style="text-align:center;"><span style="font-size:.65rem;padding:2px 8px;border-radius:6px;font-weight:700;background:${p.isPEA?'rgba(0,229,160,.12)':'rgba(108,99,255,.12)'};color:${p.isPEA?'var(--up)':'#a89fff'}">${p.isPEA?'PEA':'CTO'}</span></td>
+              <td><span style="color:${tax>0?'var(--dn)':'var(--txt3)'}">${tax>0?'−'+fmtE(tax):'—'}</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.65rem;color:var(--txt3);margin-top:12px;line-height:1.6;">
+      ⚠️ PEA détecté heuristiquement (broker EB ou mention "pea" dans les notes). Pour un suivi précis, étiquetez vos positions. Les PV PEA sont exonérées d'IR après 5 ans (17.2% PS seulement). CTO soumis au PFU 30% (12.8% IR + 17.2% PS). Ces montants sont <strong>latents</strong> — l'impôt n'est dû qu'à la cession.
+    </div>
+  </div>`;
+
+  // Init le simulateur
+  calcFlatTax();
+}
+
+function calcFlatTax() {
+  const pv = parseFloat(document.getElementById('ftPV')?.value||0)||0;
+  const abat = parseFloat(document.getElementById('ftAbat')?.value||0)||0;
+  const env = document.getElementById('ftEnv')?.value||'cto';
+  const out = document.getElementById('flatTaxResults');
+  if(!out) return;
+  if(!pv) { out.innerHTML='<div class="sim-res-box" style="grid-column:1/-1;color:var(--txt3);font-size:.75rem;">Saisissez un montant pour simuler l\'impôt.</div>'; return; }
+  const base = Math.max(0, pv - abat);
+  const ir = env==='cto' ? base * 0.128 : 0;
+  const ps = base * 0.172;
+  const total = ir + ps;
+  const net = pv - total;
+  out.innerHTML=`
+    <div class="sim-res-box"><div class="sim-res-val">${fmtE(base)}</div><div class="sim-res-lbl">Base imposable</div></div>
+    ${env==='cto'?`<div class="sim-res-box"><div class="sim-res-val" style="color:var(--dn)">−${fmtE(ir)}</div><div class="sim-res-lbl">IR 12.8%</div></div>`:''}
+    <div class="sim-res-box"><div class="sim-res-val" style="color:var(--warn)">−${fmtE(ps)}</div><div class="sim-res-lbl">Prél. sociaux 17.2%</div></div>
+    <div class="sim-res-box" style="border:1px solid rgba(255,77,109,.25)"><div class="sim-res-val" style="color:var(--dn)">−${fmtE(total)}</div><div class="sim-res-lbl">Total impôt (${env==='cto'?'30%':'17.2%'})</div></div>
+    <div class="sim-res-box" style="border:1px solid rgba(0,229,160,.2)"><div class="sim-res-val up">${fmtE(net)}</div><div class="sim-res-lbl">Net après impôt</div></div>`;
+}
+
 // ════════════════════════════════════════════════════════════════════
 // END V15 FEATURES
+// ════════════════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════════════════
+// v17 — NOUVELLES FONCTIONNALITÉS
+// ════════════════════════════════════════════════════════════════════
+
+// ── 1. FLAT TAX CONFIGURABLE ─────────────────────────────────────────
+let FLAT_TAX_RATE = 0.314; // taux légal 2025 : 31.4% (12.2% IR + 17.2% PS + 2% CRDS)
+
+function loadFlatTaxRate() {
+  const stored = localStorage.getItem('pmix_flattax');
+  if (stored !== null) FLAT_TAX_RATE = parseFloat(stored) / 100;
+  else FLAT_TAX_RATE = 0.314; // taux légal 2025 : 31.4%
+}
+function saveFlatTaxRate(pct) {
+  const v = parseFloat(String(pct).replace(',', '.'));
+  if (isNaN(v) || v < 0 || v > 100) return;
+  FLAT_TAX_RATE = v / 100;
+  localStorage.setItem('pmix_flattax', v.toString());
+  // Re-render fiscal si ouvert
+  const panel = document.getElementById('panel-fiscal');
+  if (panel?.classList.contains('active')) renderFiscal();
+}
+
+// ── 2. DIVIDENDE CALENDAR v2 — dates réelles de versement ────────────
+// Base de données des dates de détachement/versement connues (à compléter)
+const DIV_DATES = {
+  'VIE.PA':   { months:[5],  name:'Véolia',         dateLabel:'11/05',  yoc:null },
+  'ORA.PA':   { months:[6],  name:'Orange',          dateLabel:'Jun',    yoc:null },
+  'BNP.PA':   { months:[5],  name:'BNP Paribas',     dateLabel:'Mai',    yoc:null },
+  'AIR.PA':   { months:[5],  name:'Air Liquide',     dateLabel:'Mai',    yoc:null },
+  'ENGI.PA':  { months:[5],  name:'Engie',           dateLabel:'Mai',    yoc:null },
+  'AXA.PA':   { months:[4],  name:'AXA',             dateLabel:'Avr',    yoc:null },
+  'SAN.PA':   { months:[6],  name:'Sanofi',          dateLabel:'Jun',    yoc:null },
+  'STLAM.MI': { months:[4],  name:'Stellantis',      dateLabel:'Avr',    yoc:null },
+  'NVDA':     { months:[3,6,9,12], name:'NVIDIA',    dateLabel:'Trim.',  yoc:null },
+  'AAPL':     { months:[2,5,8,11], name:'Apple',     dateLabel:'Trim.',  yoc:null },
+  'MSFT':     { months:[3,6,9,12], name:'Microsoft', dateLabel:'Trim.',  yoc:null },
+  'JNJ':      { months:[3,6,9,12], name:'J&J',       dateLabel:'Trim.',  yoc:null },
+  'PFE':      { months:[3,6,9,12], name:'Pfizer',    dateLabel:'Trim.',  yoc:null },
+};
+
+function renderDividendCalendarV2(wrap) {
+  if (!wrap) return;
+  const monthNames = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  const currentMonth = new Date().getMonth(); // 0-based
+
+  // Collecter toutes les positions avec dividende
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p})));
+  const divPos = allPos.filter(p=>p.div>0);
+
+  // Construire le calendrier mensuel avec infos enrichies
+  const monthData = Array.from({length:12}, (_,mi) => ({
+    month: mi,
+    total: 0,
+    tickers: [],
+    yocAvg: 0
+  }));
+
+  divPos.forEach(p => {
+    const annual = estDiv(p);
+    const divInfo = DIV_DATES[p.ticker];
+    const yoc = calcYOC(p);
+
+    if (divInfo) {
+      // On sait les mois exacts
+      divInfo.months.forEach(m => {
+        const mi = m - 1; // 0-based
+        const share = annual / divInfo.months.length;
+        monthData[mi].total += share;
+        monthData[mi].tickers.push({ ticker: p.ticker, amount: share, yoc });
+      });
+    } else {
+      // Distribution uniforme sur 12 mois
+      for (let mi = 0; mi < 12; mi++) {
+        monthData[mi].total += annual / 12;
+        if (mi === 0) monthData[mi].tickers.push({ ticker: p.ticker, amount: annual / 12, yoc });
+      }
+    }
+  });
+
+  const maxM = Math.max(...monthData.map(m=>m.total), 0.01);
+  const totalAnnual = monthData.reduce((a,m)=>a+m.total, 0);
+  const yocGlobal = divPos.length > 0 ? divPos.reduce((a,p)=>a+calcCurrentYield(p),0)/divPos.length : 0;
+
+  wrap.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span style="font-size:.65rem;color:var(--txt2);">Calendrier détaillé des versements</span>
+        ${divPos.length>0?`<span style="margin-left:10px;font-size:.65rem;background:rgba(201,169,110,.12);color:var(--gold);padding:2px 8px;border-radius:6px;border:1px solid rgba(201,169,110,.25);">Yield moyen : ${fmt(yocGlobal,2)}%</span>`:''}
+      </div>
+      <span style="font-size:.7rem;color:var(--gold);font-family:'DM Mono',monospace;">${fmtE(totalAnnual/12)} / mois · ${fmtE(totalAnnual)} / an</span>
+    </div>
+    <div class="div-cal-v2">
+      ${monthData.map((m,mi)=>`<div class="div-cal-month ${m.total>0?'has-payment':''} ${mi===currentMonth?'current-month':''}">
+        <div class="div-cal-mname">${monthNames[mi]}</div>
+        <div class="div-cal-amount">${m.total>0?fmtE(m.total):'-'}</div>
+        <div class="div-cal-bar" style="width:${m.total>0?m.total/maxM*80+5:0}%;"></div>
+        <div class="div-cal-tickers">${[...new Set(m.tickers.map(t=>t.ticker))].slice(0,3).join(' · ')}${m.tickers.length>3?'…':''}</div>
+        ${m.tickers.length>0&&m.tickers[0].yoc>0?`<div class="div-cal-yoc">${fmt(m.tickers[0].yoc,1)}% YOC</div>`:''}
+      </div>`).join('')}
+    </div>
+    ${divPos.length>0?`
+    <div class="div-rendement-row" style="margin-top:14px;">
+      ${divPos.sort((a,b)=>estDiv(b)-estDiv(a)).slice(0,6).map(p=>`
+        <div class="div-rend-card">
+          <div class="div-rend-ticker">${p.ticker}</div>
+          <div style="font-size:.6rem;color:var(--txt3);">${p.name}</div>
+          <div class="div-rend-vals">
+            <span>Div/an : <span class="div-rend-val" style="color:var(--gold)">${fmtE(estDiv(p))}</span></span>
+            <span>YOC : <span class="div-rend-val" style="color:var(--up)">${fmt(calcYOC(p),2)}%</span></span>
+            <span>Yield : <span class="div-rend-val">${fmt(calcCurrentYield(p),2)}%</span></span>
+            ${DIV_DATES[p.ticker]?`<span style="color:var(--txt3)">📅 ${DIV_DATES[p.ticker].dateLabel}</span>`:''}
+          </div>
+        </div>`).join('')}
+    </div>`:''}`
+}
+
+// ── 3. BENCHMARK COMPARISON — enrichit renderAnalyse ──────────────────
+function getBenchmarkPerfForPeriod() {
+  // Returns % perf of benchmarks over last 12m (normalized simulation)
+  const bench = {};
+  Object.entries(benchmarkData).forEach(([name, pts]) => {
+    bench[name] = ((pts[pts.length-1] / pts[0]) - 1) * 100;
+  });
+  return bench;
+}
+
+function renderBenchmarkComparisonTable(container) {
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id,bName:b.name})));
+  if (!allPos.length) { container.innerHTML='<div class="history-empty">Aucune position.</div>'; return; }
+  const benchPerfs = getBenchmarkPerfForPeriod();
+
+  const rows = allPos.map(p => {
+    const r = pnl(p);
+    const pfPerf = r.pct;
+    const alphas = {};
+    Object.entries(benchPerfs).forEach(([name, bperf]) => { alphas[name] = pfPerf - bperf; });
+    return { ...p, pfPerf, alphas, val: r.val };
+  }).sort((a,b)=>b.pfPerf-a.pfPerf);
+
+  const benchNames = Object.keys(benchPerfs);
+  container.innerHTML = `
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:.72rem;">
+      <thead><tr style="color:var(--txt3);border-bottom:1px solid var(--border);">
+        <th style="text-align:left;padding:6px 8px;">Titre</th>
+        <th style="text-align:right;padding:6px 8px;">Perf.</th>
+        ${benchNames.map(n=>`<th style="text-align:right;padding:6px 8px;">α vs ${n}</th>`).join('')}
+      </tr></thead>
+      <tbody>
+      ${rows.map(row=>`<tr style="border-top:1px solid rgba(255,255,255,.03);">
+        <td style="padding:8px;"><span style="font-weight:800;font-family:'DM Mono',monospace;">${row.ticker}</span><span style="font-size:.62rem;color:var(--txt3);margin-left:6px;">${row.name}</span></td>
+        <td style="text-align:right;padding:8px;"><span class="perf-pill ${row.pfPerf>0?'up':row.pfPerf<0?'dn':'nt'}">${row.pfPerf>0?'▲':row.pfPerf<0?'▼':'–'} ${fmt(Math.abs(row.pfPerf),1)}%</span></td>
+        ${benchNames.map(n=>`<td style="text-align:right;padding:8px;"><span class="bench-inline ${row.alphas[n]>=0?'bench-outperf':'bench-underperf'}">${row.alphas[n]>=0?'+':''}${fmt(row.alphas[n],1)}%</span></td>`).join('')}
+      </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+    <div style="font-size:.6rem;color:var(--txt3);margin-top:8px;">α = Alpha vs benchmark (perf. individuelle − perf. indice sur 12m simulés)</div>`;
+}
+
+// ── 4. ALLOCATION DONUTS ───────────────────────────────────────────────
+let _allocCharts = {};
+function renderAllocDonuts(container) {
+  if (!container) return;
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id,bColor:b.color})));
+  const totalVal = allPos.reduce((a,p)=>a+pnl(p).val, 0);
+  if (!totalVal) { container.innerHTML='<div class="history-empty">Aucune position.</div>'; return; }
+
+  // Type (ETF / Action / Crypto / Autre)
+  const typeMap = {};
+  allPos.forEach(p => { const t = p.type||'autre'; typeMap[t]=(typeMap[t]||0)+pnl(p).val; });
+
+  // Broker
+  const brokerMap = {};
+  BROKERS.forEach(b => { const s = brokerStats(b.id); if(s.tv>0) brokerMap[b.name]={val:s.tv,color:b.color}; });
+
+  // Secteur
+  const sectorMap = {};
+  allPos.forEach(p => { const s=SECTORS[p.ticker]||'Autre'; sectorMap[s]=(sectorMap[s]||0)+pnl(p).val; });
+
+  // Devise
+  const deviseMap = {};
+  allPos.forEach(p => { const d=p.currency||'€'; deviseMap[d]=(deviseMap[d]||0)+pnl(p).val; });
+
+  const COLORS = ['#6c63ff','#00e5a0','#ffd60a','#ff6b35','#f72585','#00b4d8','#c9a96e','#3ddc84','#e879f9','#38bdf8'];
+  const TYPE_COLORS = { action:'#6c63ff', etf:'#00e5a0', crypto:'#ffd60a', oblig:'#c9a96e', autre:'#7b80a0' };
+
+  container.innerHTML = `
+    <div class="alloc-donut-grid">
+      <div class="alloc-donut-card">
+        <div class="alloc-donut-title">Par type</div>
+        <div class="alloc-donut-wrap"><canvas id="donutType"></canvas></div>
+      </div>
+      <div class="alloc-donut-card">
+        <div class="alloc-donut-title">Par broker</div>
+        <div class="alloc-donut-wrap"><canvas id="donutBroker"></canvas></div>
+      </div>
+      <div class="alloc-donut-card">
+        <div class="alloc-donut-title">Par secteur</div>
+        <div class="alloc-donut-wrap"><canvas id="donutSecteur"></canvas></div>
+      </div>
+      <div class="alloc-donut-card">
+        <div class="alloc-donut-title">Par devise</div>
+        <div class="alloc-donut-wrap"><canvas id="donutDevise"></canvas></div>
+      </div>
+    </div>
+    <div style="font-size:.65rem;color:var(--txt3);margin-top:4px;text-align:center;">
+      Cible 40% ETF / 55% Actions / 5% Cash
+      <span style="margin-left:12px;color:${typeMap.etf&&totalVal>0&&typeMap.etf/totalVal>=0.35&&typeMap.etf/totalVal<=0.45?'var(--up)':'var(--warn)'}">
+        ETF actuel : ${totalVal>0?fmt((typeMap.etf||0)/totalVal*100,1):0}%
+      </span>
+    </div>`;
+
+  setTimeout(() => {
+    function makeDonut(id, labels, data, colors) {
+      const ctx = document.getElementById(id)?.getContext('2d');
+      if (!ctx) return;
+      if (_allocCharts[id]) _allocCharts[id].destroy();
+      _allocCharts[id] = new Chart(ctx, {
+        type: 'doughnut',
+        data: { labels, datasets:[{ data, backgroundColor:colors.map(c=>c+'55'), borderColor:colors, borderWidth:2 }] },
+        options: { responsive:true, maintainAspectRatio:false, cutout:'60%',
+          plugins:{ legend:{ position:'bottom', labels:{ color:'#7b80a0', font:{ family:'Space Grotesk', size:9 }, padding:6, boxWidth:10 } },
+            tooltip:{ callbacks:{ label:ctx=>`  ${fmt(ctx.raw/totalVal*100,1)}% · ${fmtE(ctx.raw)}` } } } }
+      });
+    }
+    const typeEntries = Object.entries(typeMap).sort((a,b)=>b[1]-a[1]);
+    makeDonut('donutType', typeEntries.map(e=>e[0]), typeEntries.map(e=>e[1]), typeEntries.map(e=>TYPE_COLORS[e[0]]||'#888'));
+    const brokerEntries = Object.entries(brokerMap).sort((a,b)=>b[1].val-a[1].val);
+    makeDonut('donutBroker', brokerEntries.map(e=>e[0]), brokerEntries.map(e=>e[1].val), brokerEntries.map(e=>e[1].color));
+    const sectorEntries2 = Object.entries(sectorMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    makeDonut('donutSecteur', sectorEntries2.map(e=>e[0]), sectorEntries2.map(e=>e[1]), COLORS);
+    const deviseEntries = Object.entries(deviseMap).sort((a,b)=>b[1]-a[1]);
+    makeDonut('donutDevise', deviseEntries.map(e=>e[0]), deviseEntries.map(e=>e[1]), ['#c9a96e','#00b4d8','#6c63ff','#ffd60a','#00e5a0']);
+  }, 80);
+}
+
+// ── 5. CFD / SWING MODULE ─────────────────────────────────────────────
+let cfdPositions = [];
+let _cfdDir = 'long'; // 'long' | 'short'
+
+function loadCFD() {
+  try { const s=localStorage.getItem('pmix_cfd'); if(s) cfdPositions=JSON.parse(s); } catch(e) {}
+}
+function saveCFD() {
+  try { localStorage.setItem('pmix_cfd', JSON.stringify(cfdPositions)); } catch(e) {}
+}
+
+function calcCFDPnL(pos) {
+  if (!pos.current || !pos.entryPrice || !pos.qty) return 0;
+  const diff = pos.direction==='long' ? pos.current - pos.entryPrice : pos.entryPrice - pos.current;
+  return diff * pos.qty * (pos.leverage||1);
+}
+function calcCFDMarginUsed(pos) {
+  return (pos.entryPrice * pos.qty) / (pos.leverage || 1);
+}
+function calcCFDROE(pos) {
+  const margin = calcCFDMarginUsed(pos);
+  if (!margin) return 0;
+  return calcCFDPnL(pos) / margin * 100;
+}
+
+function renderCFD() {
+  const panel = document.getElementById('panel-cfd');
+  if (!panel) return;
+  loadCFD();
+
+  const openPos = cfdPositions.filter(p=>p.status==='open');
+  const closedPos = cfdPositions.filter(p=>p.status==='closed');
+
+  // Live P&L: get current prices from portfolio or manual
+  openPos.forEach(p => {
+    if (!p.current) {
+      // Try to find current price from portfolios
+      BROKERS.forEach(b=>(portfolios[b.id]||[]).forEach(pos=>{ if(pos.ticker===p.ticker) p.current=pos.current; }));
+    }
+  });
+
+  const totalPnL = openPos.reduce((a,p)=>a+calcCFDPnL(p), 0);
+  const totalMargin = openPos.reduce((a,p)=>a+calcCFDMarginUsed(p), 0);
+  const totalROE = totalMargin>0 ? totalPnL/totalMargin*100 : 0;
+  const closedPnL = closedPos.reduce((a,p)=>a+(p.realizedPnL||0), 0);
+
+  panel.innerHTML = `
+    <div class="cfd-header">
+      <div>
+        <div style="font-size:.7rem;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:2px;">⚡ Poche CFD / Swing — XTB</div>
+        <div style="font-size:.65rem;color:var(--txt3);margin-top:4px;">Module séparé du portefeuille long terme · Levier, marge, P&L en temps réel</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="alert-poll-badge"><div class="alert-poll-dot"></div>Prix auto depuis le portefeuille</div>
+        <button class="hbtn" onclick="document.getElementById('cfdAddForm').style.display=document.getElementById('cfdAddForm').style.display==='none'?'block':'none'">+ Nouvelle position</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="cfd-kpi-strip">
+      <div class="cfd-kpi ck1">
+        <div class="cfd-kpi-lbl">Positions ouvertes</div>
+        <div class="cfd-kpi-val">${openPos.length}</div>
+      </div>
+      <div class="cfd-kpi ${totalPnL>=0?'ck2':'ck3'}">
+        <div class="cfd-kpi-lbl">P&L non réalisé</div>
+        <div class="cfd-kpi-val ${cls(totalPnL)}">${fmtS(totalPnL)} €</div>
+      </div>
+      <div class="cfd-kpi ck4">
+        <div class="cfd-kpi-lbl">Marge utilisée</div>
+        <div class="cfd-kpi-val">${fmtE(totalMargin)}</div>
+      </div>
+      <div class="cfd-kpi ${totalROE>=0?'ck2':'ck3'}">
+        <div class="cfd-kpi-lbl">ROE sur marge</div>
+        <div class="cfd-kpi-val ${cls(totalROE)}">${fmtSPct(totalROE)}</div>
+      </div>
+      <div class="cfd-kpi ${closedPnL>=0?'ck2':'ck3'}">
+        <div class="cfd-kpi-lbl">P&L réalisé (clôturés)</div>
+        <div class="cfd-kpi-val ${cls(closedPnL)}">${fmtS(closedPnL)} €</div>
+      </div>
+    </div>
+
+    <!-- Positions ouvertes -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">📊 Positions ouvertes (${openPos.length})</div>
+      ${openPos.length ? `
+      <div class="table-wrap">
+        <table class="cfd-pos-table">
+          <thead><tr>
+            <th style="text-align:left;">Instrument</th>
+            <th>Dir.</th>
+            <th>Levier</th>
+            <th>Qté</th>
+            <th>Prix entrée</th>
+            <th>Cours actuel</th>
+            <th>Marge</th>
+            <th>P&L</th>
+            <th>ROE</th>
+            <th>SL / TP</th>
+            <th></th>
+          </tr></thead>
+          <tbody>
+          ${openPos.map((p,i)=>{
+            const pl = calcCFDPnL(p);
+            const margin = calcCFDMarginUsed(p);
+            const roe = calcCFDROE(p);
+            const idx = cfdPositions.indexOf(p);
+            return `<tr>
+              <td><div style="font-weight:800;font-family:'DM Mono',monospace;font-size:.8rem;">${p.ticker}</div><div style="font-size:.6rem;color:var(--txt3);">${p.name||''}</div></td>
+              <td><span class="${p.direction==='long'?'cfd-badge-long':'cfd-badge-short'}">${p.direction==='long'?'LONG':'SHORT'}</span></td>
+              <td><span class="lev-badge">×${p.leverage||1}</span></td>
+              <td>${fmt(p.qty,2)}</td>
+              <td>${fmt(p.entryPrice,4)} ${p.currency||'€'}</td>
+              <td>
+                <input class="inline-price" style="width:80px;color:${p.current&&p.current>p.entryPrice?'var(--up)':'var(--dn)'};"
+                  value="${p.current?fmtPrice(p.current):''}"
+                  placeholder="cours..."
+                  onblur="updateCFDPrice(${idx}, this.value);"
+                  onkeydown="if(event.key==='Enter')this.blur();">
+              </td>
+              <td>${fmtE(margin)}</td>
+              <td class="${cls(pl)} cfd-pl-live">${fmtS(pl)} €</td>
+              <td class="${cls(roe)}">${fmtSPct(roe)}</td>
+              <td style="font-size:.62rem;color:var(--txt3);">${p.stopLoss?'SL '+fmt(p.stopLoss,2):''}${p.stopLoss&&p.takeProfit?' · ':''}${p.takeProfit?'TP '+fmt(p.takeProfit,2):''}</td>
+              <td>
+                <div style="display:flex;gap:4px;">
+                  <button class="edit-btn" onclick="closeCFDPosition(${idx})" title="Clôturer" style="font-size:.65rem;color:var(--warn);border-color:rgba(255,214,10,.3);">✓ Clôturer</button>
+                  <button class="del-btn" onclick="deleteCFDPosition(${idx})">✕</button>
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+          </tbody>
+        </table>
+      </div>` : '<div class="empty-state">Aucune position CFD ouverte.</div>'}
+    </div>
+
+    <!-- Positions clôturées -->
+    ${closedPos.length ? `
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">📋 Historique positions clôturées (${closedPos.length})</div>
+      <div class="table-wrap">
+        <table class="cfd-pos-table">
+          <thead><tr>
+            <th style="text-align:left;">Instrument</th>
+            <th>Dir.</th>
+            <th>Levier</th>
+            <th>Entrée</th>
+            <th>Sortie</th>
+            <th>P&L réalisé</th>
+            <th>Date</th>
+          </tr></thead>
+          <tbody>
+          ${[...closedPos].reverse().map((p,i)=>{
+            const pl = p.realizedPnL||0;
+            return `<tr class="cfd-closed-row">
+              <td><span style="font-weight:800;font-family:'DM Mono',monospace;">${p.ticker}</span></td>
+              <td><span class="${p.direction==='long'?'cfd-badge-long':'cfd-badge-short'}">${p.direction==='long'?'LONG':'SHORT'}</span></td>
+              <td><span class="lev-badge">×${p.leverage||1}</span></td>
+              <td>${fmt(p.entryPrice,4)}</td>
+              <td>${p.exitPrice?fmt(p.exitPrice,4):'—'}</td>
+              <td class="${cls(pl)} cfd-pl-live">${fmtS(pl)} €</td>
+              <td style="font-size:.65rem;color:var(--txt3);">${p.closedAt||'—'}</td>
+            </tr>`;
+          }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>` : ''}
+
+    <!-- Formulaire d'ajout -->
+    <div class="cfd-add-form" id="cfdAddForm" style="display:none;">
+      <div class="cfd-form-title">➕ Nouvelle position CFD / Swing</div>
+      <div class="cfd-form-grid">
+        <div class="ff">
+          <label class="form-lbl">Ticker</label>
+          <input class="form-input" id="cfdTicker" placeholder="ex: NVDA" style="text-transform:uppercase">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Nom</label>
+          <input class="form-input" id="cfdName" placeholder="ex: NVIDIA">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Direction</label>
+          <div class="cfd-dir-btns">
+            <button class="cfd-dir-btn long active" id="cfdDirLong" onclick="setCFDDir('long')">▲ LONG</button>
+            <button class="cfd-dir-btn short" id="cfdDirShort" onclick="setCFDDir('short')">▼ SHORT</button>
+          </div>
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Levier</label>
+          <input class="form-input" id="cfdLeverage" type="number" value="5" min="1" max="200" step="1"
+            oninput="document.getElementById('cfdMarginPreview').textContent=calcCFDMarginPreview()">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Quantité</label>
+          <input class="form-input" id="cfdQty" type="number" placeholder="ex: 10" step="any" min="0"
+            oninput="document.getElementById('cfdMarginPreview').textContent=calcCFDMarginPreview()">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Prix d'entrée</label>
+          <input class="form-input" id="cfdEntry" type="number" placeholder="ex: 120.50" step="any" min="0"
+            oninput="document.getElementById('cfdMarginPreview').textContent=calcCFDMarginPreview()">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Cours actuel</label>
+          <input class="form-input" id="cfdCurrent" type="number" placeholder="= entrée si vide" step="any" min="0">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Stop-Loss</label>
+          <input class="form-input" id="cfdSL" type="number" placeholder="ex: 110.00" step="any" min="0">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Take-Profit</label>
+          <input class="form-input" id="cfdTP" type="number" placeholder="ex: 135.00" step="any" min="0">
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Devise</label>
+          <select class="form-input" id="cfdCurrency">
+            <option value="€">€ EUR</option><option value="$">$ USD</option>
+            <option value="£">£ GBP</option><option value="CHF">CHF</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="form-lbl">Notes</label>
+          <input class="form-input" id="cfdNotes" placeholder="Setup, raison...">
+        </div>
+      </div>
+      <div id="cfdMarginPreview" style="font-size:.72rem;color:var(--txt2);margin:10px 0;min-height:20px;"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="btn-cancel" onclick="document.getElementById('cfdAddForm').style.display='none'">Annuler</button>
+        <button class="btn-save" onclick="saveCFDPosition()" style="background:#6c63ff;">Ouvrir la position</button>
+      </div>
+    </div>
+
+    <div style="font-size:.62rem;color:var(--txt3);margin-top:16px;padding:10px;border:1px solid var(--border);border-radius:8px;line-height:1.6;">
+      ⚠️ Les CFD sont des instruments complexes avec un risque élevé de perte rapide en capital en raison de l'effet de levier. Ce module est à titre de suivi uniquement. Passez vos ordres directement sur XTB.
+    </div>`;
+}
+
+function setCFDDir(dir) {
+  _cfdDir = dir;
+  document.getElementById('cfdDirLong')?.classList.toggle('active', dir==='long');
+  document.getElementById('cfdDirShort')?.classList.toggle('active', dir==='short');
+}
+
+function calcCFDMarginPreview() {
+  const entry = parseFloat(document.getElementById('cfdEntry')?.value||0);
+  const qty = parseFloat(document.getElementById('cfdQty')?.value||0);
+  const lev = parseFloat(document.getElementById('cfdLeverage')?.value||1);
+  if (!entry||!qty||!lev) return '';
+  const margin = entry * qty / lev;
+  const exposure = entry * qty;
+  return `Exposition : ${fmtE(exposure)} · Marge requise : ${fmtE(margin)} (×${lev} levier)`;
+}
+
+function saveCFDPosition() {
+  const ticker = (document.getElementById('cfdTicker')?.value||'').trim().toUpperCase();
+  const name = (document.getElementById('cfdName')?.value||'').trim() || ticker;
+  const leverage = parseFloat(document.getElementById('cfdLeverage')?.value||1);
+  const qty = parseFloat(document.getElementById('cfdQty')?.value||0);
+  const entryPrice = parseFloat(document.getElementById('cfdEntry')?.value||0);
+  const current = parseFloat(document.getElementById('cfdCurrent')?.value||0) || entryPrice;
+  const stopLoss = parseFloat(document.getElementById('cfdSL')?.value||0)||null;
+  const takeProfit = parseFloat(document.getElementById('cfdTP')?.value||0)||null;
+  const currency = document.getElementById('cfdCurrency')?.value||'€';
+  const notes = document.getElementById('cfdNotes')?.value||'';
+
+  if (!ticker||!qty||!entryPrice) { showNotif('⚠️ Champs manquants','Ticker, quantité et prix requis','var(--dn)'); return; }
+
+  cfdPositions.push({
+    ticker, name, direction:_cfdDir, leverage, qty, entryPrice, current,
+    stopLoss, takeProfit, currency, notes,
+    status: 'open',
+    openedAt: new Date().toLocaleDateString('fr-FR')
+  });
+  saveCFD();
+  document.getElementById('cfdAddForm').style.display = 'none';
+  renderCFD();
+  showNotif(`⚡ Position ${_cfdDir.toUpperCase()} ouverte`, `${ticker} × ${qty} @ ${fmt(entryPrice,4)} (×${leverage})`, '#6c63ff');
+}
+
+function updateCFDPrice(idx, val) {
+  const v = parseFloat(String(val).replace(',','.'));
+  if (isNaN(v)||v<=0||!cfdPositions[idx]) return;
+  cfdPositions[idx].current = parseFloat(v.toFixed(4));
+  saveCFD();
+  renderCFD();
+}
+
+function closeCFDPosition(idx) {
+  const pos = cfdPositions[idx];
+  if (!pos) return;
+  const exitPriceStr = prompt(`Clôturer ${pos.ticker} — Prix de sortie (laisser vide pour cours actuel ${pos.current||pos.entryPrice}) :`, pos.current||pos.entryPrice);
+  if (exitPriceStr === null) return;
+  const exitPrice = parseFloat(exitPriceStr) || pos.current || pos.entryPrice;
+  const realizedPnL = pos.direction==='long'
+    ? (exitPrice - pos.entryPrice) * pos.qty * (pos.leverage||1)
+    : (pos.entryPrice - exitPrice) * pos.qty * (pos.leverage||1);
+  cfdPositions[idx] = { ...pos, status:'closed', exitPrice, realizedPnL, closedAt:new Date().toLocaleDateString('fr-FR') };
+  saveCFD();
+  renderCFD();
+  showNotif(`✓ Position clôturée — ${pos.ticker}`, `P&L réalisé : ${fmtS(realizedPnL)} €`, realizedPnL>=0?'var(--up)':'var(--dn)');
+}
+
+function deleteCFDPosition(idx) {
+  if (!confirm(`Supprimer la position ${cfdPositions[idx]?.ticker} ?`)) return;
+  cfdPositions.splice(idx, 1);
+  saveCFD();
+  renderCFD();
+}
+
+// ── 6. ALERTES — polling toutes les minutes ───────────────────────────
+let _alertPollingInterval = null;
+function startAlertPolling() {
+  if (_alertPollingInterval) return;
+  _alertPollingInterval = setInterval(() => {
+    checkAlerts();
+  }, 60 * 1000); // toutes les 60s
+}
+function stopAlertPolling() {
+  if (_alertPollingInterval) { clearInterval(_alertPollingInterval); _alertPollingInterval = null; }
+}
+
+// ── 7. OVERRIDE renderAnalyse — inclure donuts + benchmark ───────────
+const _origRenderAnalyse = renderAnalyse;
+renderAnalyse = function() {
+  const panel = document.getElementById('panel-analyse');
+  if (!panel) return;
+
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id})));
+  const divPos = allPos.filter(p=>p.div>0);
+
+  const yocData = divPos.map(p=>({
+    ticker:p.ticker, name:p.name,
+    yoc: calcYOC(p),
+    yield: calcCurrentYield(p),
+    annual: estDiv(p)
+  })).sort((a,b)=>b.yoc-a.yoc);
+
+  panel.innerHTML = `
+    <div style="font-size:.7rem;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+      📊 Analyse Avancée <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+    </div>
+
+    <!-- Allocation Donuts -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">🍩 Allocation — Vue camembert (ETF · Actions · Secteur · Devise · Broker)</div>
+      <div id="allocDonutsContainer"></div>
+    </div>
+
+    <!-- Performance vs Benchmark -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">🏁 Performance vs Benchmarks
+        <div class="bench-controls" style="display:inline-flex;gap:4px;margin-left:10px;">
+          ${Object.keys(benchmarkData).map(k=>`<button class="bench-btn ${k===selectedBench?'active':''}" onclick="selectBench('${k}')" style="padding:3px 8px;font-size:.65rem;">${k}</button>`).join('')}
+        </div>
+      </div>
+      <div class="chart-wrap" style="height:200px;margin-bottom:14px;"><canvas id="benchChart2"></canvas></div>
+      <div id="benchCompContainer"></div>
+    </div>
+
+    <!-- Calendrier dividendes v2 -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">📅 Calendrier des dividendes — Versements et Yield</div>
+      <div id="divCalV2Container"></div>
+    </div>
+
+    <!-- Yield on Cost -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">💎 Yield on Cost (YOC) — Rendement sur prix d'achat
+        <span style="font-size:.65rem;color:var(--txt3);font-weight:400;">Métrique long terme : dividende / PRU</span>
+      </div>
+      ${yocData.length ? `
+      <table style="width:100%;border-collapse:collapse;font-size:.75rem;">
+        <thead><tr style="color:var(--txt3);">
+          <th style="text-align:left;padding:6px 8px;">Ticker</th>
+          <th style="text-align:right;padding:6px 8px;">YOC (sur PRU)</th>
+          <th style="text-align:right;padding:6px 8px;">Yield actuel</th>
+          <th style="text-align:right;padding:6px 8px;">Div. / an</th>
+          <th style="text-align:right;padding:6px 8px;">Bonus YOC</th>
+        </tr></thead>
+        <tbody>
+        ${yocData.map(d=>{
+          const bonus = d.yoc - d.yield;
+          return `<tr style="border-top:1px solid var(--border);">
+            <td style="padding:8px;font-weight:800;font-family:'DM Mono',monospace;">${d.ticker} <span style="font-size:.62rem;color:var(--txt2);font-weight:400;">${d.name}</span></td>
+            <td style="text-align:right;padding:8px;"><span class="yoc-badge">${fmt(d.yoc,2)}%</span></td>
+            <td style="text-align:right;padding:8px;color:var(--up);font-weight:700;font-family:'DM Mono',monospace;">${fmt(d.yield,2)}%</td>
+            <td style="text-align:right;padding:8px;font-family:'DM Mono',monospace;">${fmtE(d.annual)}</td>
+            <td style="text-align:right;padding:8px;font-weight:700;color:${bonus>0?'var(--up)':'var(--dn)'};font-family:'DM Mono',monospace;">${bonus>0?'+':''}${fmt(bonus,2)}%</td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>
+      <div style="font-size:.65rem;color:var(--txt3);margin-top:10px;">
+        💡 Le <strong>YOC (Yield on Cost)</strong> mesure le rendement réel sur votre coût d'achat initial. Un YOC > yield actuel signifie que votre position a pris de la valeur.
+      </div>` : '<div class="history-empty">Aucune position avec dividende enregistré.</div>'}
+    </div>
+
+    <!-- Matrice de corrélation -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">🔗 Matrice de corrélation sectorielle</div>
+      <div id="corrMatrixContainer"></div>
+    </div>
+
+    <!-- Historique snapshots -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">
+        📸 Historique patrimonial (Snapshots)
+        <button class="snap-btn" onclick="takeSnapshot()">📸 Capturer maintenant</button>
+      </div>
+      ${snapshots.length >= 2 ? `<div class="chart-wrap" style="height:180px;margin-bottom:16px;"><canvas id="snapshotChart"></canvas></div>` : ''}
+      <div class="snapshot-list" id="snapshotListEl">
+        ${snapshots.length === 0 ? '<div class="history-empty">Aucun snapshot enregistré.<br>Cliquez sur "📸 Capturer" pour commencer à tracer l\'évolution de votre patrimoine.</div>' :
+          [...snapshots].reverse().map((s,i)=>{
+            const idx = snapshots.length - 1 - i;
+            const d = new Date(s.ts);
+            return `<div class="snapshot-item">
+              <div><span class="snap-date">${d.toLocaleDateString('fr-FR')} ${d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span></div>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <span class="snap-val">${fmtE(s.total)}</span>
+                <span class="snap-pnl ${cls(s.gain)}">${fmtS(s.gain)} €</span>
+                <button class="snap-del" onclick="deleteSnapshot(${idx})" title="Supprimer">✕</button>
+              </div>
+            </div>`;
+          }).join('')}
+      </div>
+    </div>`;
+
+  // Render sub-components async
+  setTimeout(()=>{
+    renderAllocDonuts(document.getElementById('allocDonutsContainer'));
+    renderDividendCalendarV2(document.getElementById('divCalV2Container'));
+    renderBenchmarkComparisonTable(document.getElementById('benchCompContainer'));
+    renderCorrelationMatrix(document.getElementById('corrMatrixContainer'));
+
+    // Benchmark chart
+    const allPosB = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p})));
+    if (allPosB.length) {
+      const totalInvested = allPosB.reduce((s,p)=>s+p.avg*p.qty,0);
+      const totalCurrent = allPosB.reduce((s,p)=>s+toEUR(p.current*p.qty,p.currency,p.forexConvert),0);
+      const pfPerf = totalInvested>0?(totalCurrent/totalInvested-1)*100:0;
+      const pfPoints = Array.from({length:13},(_,i)=>parseFloat((100+pfPerf*(i/12)).toFixed(2)));
+      const benchPoints = benchmarkData[selectedBench]||benchmarkData['MSCI World'];
+      const now2=new Date();
+      const monthLabels=Array.from({length:13},(_,i)=>{
+        const d=new Date(now2);d.setMonth(d.getMonth()-12+i);
+        return i===12?'Auj':d.toLocaleDateString('fr-FR',{month:'short'});
+      });
+      const ctx=document.getElementById('benchChart2')?.getContext('2d');
+      if(ctx){
+        new Chart(ctx,{type:'line',data:{labels:monthLabels,datasets:[
+          {label:'Portefeuille',data:pfPoints,borderColor:'#6c63ff',backgroundColor:'rgba(108,99,255,.1)',fill:true,tension:.4,borderWidth:2,pointRadius:0},
+          {label:selectedBench,data:benchPoints,borderColor:'#00e5a0',backgroundColor:'rgba(0,229,160,.06)',fill:true,tension:.4,borderWidth:2,pointRadius:0,borderDash:[5,3]}
+        ]},options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:'bottom',labels:{color:'#7b80a0',font:{family:'Space Grotesk',size:11}}},tooltip:{mode:'index',intersect:false}},
+          scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10},callback:v=>v.toFixed(0)}}}}});
+      }
+    }
+
+    // Snapshot sparkline
+    if(snapshots.length>=2){
+      const ctx=document.getElementById('snapshotChart')?.getContext('2d');
+      if(ctx){
+        if(_snapshotChart)_snapshotChart.destroy();
+        _snapshotChart=new Chart(ctx,{type:'line',data:{
+          labels:snapshots.map(s=>new Date(s.ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})),
+          datasets:[{label:'Patrimoine total',data:snapshots.map(s=>parseFloat(s.total.toFixed(2))),
+            borderColor:'#c9a96e',backgroundColor:'rgba(201,169,110,.1)',fill:true,tension:.4,borderWidth:2,pointRadius:2,pointBackgroundColor:'#c9a96e'}]},
+          options:{responsive:true,maintainAspectRatio:false,
+            plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`  ${fmtE(ctx.raw)}`}}},
+            scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10}}},
+              y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7b80a0',font:{size:10},callback:v=>fmtE(v)}}}}});
+      }
+    }
+  }, 80);
+};
+
+// ── 8. OVERRIDE renderFiscal — taux flat tax configurable ─────────────
+const _origRenderFiscal = renderFiscal;
+renderFiscal = function() {
+  const panel = document.getElementById('panel-fiscal');
+  if (!panel) return;
+
+  const allPos = BROKERS.flatMap(b=>(portfolios[b.id]||[]).map(p=>({...p,bId:b.id,bName:BROKERS.find(x=>x.id===b.id)?.name||b.id})));
+
+  let totalGainBrut=0, totalGainCTO=0, totalGainPEA=0;
+  const pvLines = allPos.map(p=>{
+    const r=pnl(p); const gain=r.gain;
+    const isPEA=p.bId==='EB'||p.notes?.toLowerCase().includes('pea');
+    totalGainBrut+=gain;
+    if(isPEA) totalGainPEA+=gain; else totalGainCTO+=gain;
+    return{...p,gain,gainPct:r.pct,isPEA};
+  }).sort((a,b)=>b.gain-a.gain);
+
+  const pvPositivesCTO=pvLines.filter(p=>!p.isPEA&&p.gain>0).reduce((s,p)=>s+p.gain,0);
+  const flatTaxCTO=pvPositivesCTO*FLAT_TAX_RATE;
+  const pvPositivesPEA=pvLines.filter(p=>p.isPEA&&p.gain>0).reduce((s,p)=>s+p.gain,0);
+  const taxPEA=pvPositivesPEA*0.172;
+  const divAnnual=totalDividends();
+  const divTax=divAnnual*FLAT_TAX_RATE;
+  const taxPctDisplay = (FLAT_TAX_RATE * 100).toFixed(1);
+
+  panel.innerHTML=`
+  <div style="font-size:.7rem;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+    🏛️ Onglet Fiscal <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+    <span style="font-size:.6rem;color:var(--txt3);text-transform:none;letter-spacing:0;font-weight:400;">Estimations indicatives — consulter un CGP</span>
+  </div>
+
+  <!-- Configurateur taux flat tax -->
+  <div class="flattax-config">
+    <label>⚙️ Taux de la flat tax CTO :</label>
+    <input type="number" id="flatTaxInput" min="0" max="100" step="0.1"
+      value="${(FLAT_TAX_RATE*100).toFixed(1)}"
+      style="width:80px;background:var(--bg4);border:1px solid var(--border2);color:var(--txt);padding:7px 10px;border-radius:8px;font-size:.9rem;font-family:'DM Mono',monospace;font-weight:700;text-align:center;outline:none;"
+      oninput="saveFlatTaxRate(this.value)"
+      onblur="if(!this.value||isNaN(parseFloat(this.value))){this.value='31.4';saveFlatTaxRate(31.4);}">
+    <span style="font-size:.85rem;color:var(--txt2);margin-left:-6px;">%</span>
+    <span style="font-size:.62rem;color:var(--txt3);">Taux légal 2025 : 31.4% (12.2% IR + 17.2% PS + 2% CRDS) · personnalisable</span>
+  </div>
+
+  <!-- KPI Fiscal -->
+  <div class="perf-summary" style="margin-bottom:20px;">
+    <div class="perf-box"><div class="perf-box-val ${cls(totalGainBrut)}">${fmtS(totalGainBrut)} €</div><div class="perf-box-lbl">PV latentes totales</div></div>
+    <div class="perf-box"><div class="perf-box-val ${cls(totalGainCTO)}">${fmtS(totalGainCTO)} €</div><div class="perf-box-lbl">PV latentes CTO</div></div>
+    <div class="perf-box"><div class="perf-box-val ${cls(totalGainPEA)}">${fmtS(totalGainPEA)} €</div><div class="perf-box-lbl">PV latentes PEA (est.)</div></div>
+    <div class="perf-box" style="border:1px solid rgba(255,77,109,.2);">
+      <div class="perf-box-val" style="color:var(--dn)">${fmtE(flatTaxCTO)}</div>
+      <div class="perf-box-lbl">Flat tax ${taxPctDisplay}% CTO (si cession)</div>
+    </div>
+    <div class="perf-box" style="border:1px solid rgba(255,214,10,.2);">
+      <div class="perf-box-val" style="color:var(--warn)">${fmtE(taxPEA)}</div>
+      <div class="perf-box-lbl">PS 17.2% PEA (est.)</div>
+    </div>
+    <div class="perf-box" style="border:1px solid rgba(255,77,109,.15);">
+      <div class="perf-box-val" style="color:var(--dn)">${fmtE(divTax)}</div>
+      <div class="perf-box-lbl">Flat tax ${taxPctDisplay}% div. annuels</div>
+    </div>
+  </div>
+
+  <!-- Simulateur flat tax -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">🧮 Simulateur Flat Tax (taux : ${taxPctDisplay}%)</div>
+    <div class="sim-row" style="margin-bottom:14px;">
+      <div class="sim-input-wrap">
+        <label class="sim-lbl">Montant de la plus-value réalisée (€)</label>
+        <input class="sim-input" type="number" id="ftPV" placeholder="ex: 5000" oninput="calcFlatTaxV2()">
+      </div>
+      <div class="sim-input-wrap">
+        <label class="sim-lbl">Abattement / pertes passées (€)</label>
+        <input class="sim-input" type="number" id="ftAbat" placeholder="0" value="0" oninput="calcFlatTaxV2()">
+      </div>
+      <div class="sim-input-wrap">
+        <label class="sim-lbl">Enveloppe</label>
+        <select class="sim-input" id="ftEnv" onchange="calcFlatTaxV2()">
+          <option value="cto">CTO — Flat Tax ${taxPctDisplay}%</option>
+          <option value="pea">PEA — PS 17.2% seulement</option>
+        </select>
+      </div>
+    </div>
+    <div class="sim-results" id="flatTaxResults">
+      <div class="sim-res-box" style="grid-column:1/-1;color:var(--txt3);font-size:.75rem;">Saisissez un montant pour simuler l'impôt.</div>
+    </div>
+  </div>
+
+  <!-- Tableau PV latentes -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">📋 Plus-values latentes par position
+      <span style="font-size:.6rem;color:var(--txt3);">Trié par gain décroissant · Flat Tax = ${taxPctDisplay}%</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th style="text-align:left;">Titre</th>
+          <th>Broker</th>
+          <th>PV latente (€)</th>
+          <th>PV (%)</th>
+          <th>Enveloppe</th>
+          <th>Flat Tax estimée (${taxPctDisplay}%)</th>
+        </tr></thead>
+        <tbody>
+        ${pvLines.map(p=>{
+          const tax=p.gain>0?(p.isPEA?p.gain*0.172:p.gain*FLAT_TAX_RATE):0;
+          return`<tr>
+            <td><div class="t-ticker">${p.ticker}</div><div class="t-name">${p.name||''}</div></td>
+            <td style="text-align:center;"><span style="${pillStyle(p.bId)}">${p.bName}</span></td>
+            <td><span class="${cls(p.gain)}">${fmtS(p.gain)} €</span></td>
+            <td><span class="${cls(p.gainPct)}">${fmtSPct(p.gainPct)}</span></td>
+            <td style="text-align:center;"><span style="font-size:.65rem;padding:2px 8px;border-radius:6px;font-weight:700;background:${p.isPEA?'rgba(0,229,160,.12)':'rgba(108,99,255,.12)'};color:${p.isPEA?'var(--up)':'#a89fff'}">${p.isPEA?'PEA':'CTO'}</span></td>
+            <td><span style="color:${tax>0?'var(--dn)':'var(--txt3)'}">${tax>0?'−'+fmtE(tax):'—'}</span></td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.65rem;color:var(--txt3);margin-top:12px;line-height:1.6;">
+      ⚠️ PEA détecté heuristiquement (broker EB ou mention "pea" dans les notes). PFU CTO configurable ci-dessus via le slider. Ces montants sont <strong>latents</strong> — l'impôt n'est dû qu'à la cession.
+    </div>
+  </div>`;
+
+  calcFlatTaxV2();
+};
+
+function calcFlatTaxV2() {
+  const pv=parseFloat(document.getElementById('ftPV')?.value||0)||0;
+  const abat=parseFloat(document.getElementById('ftAbat')?.value||0)||0;
+  const env=document.getElementById('ftEnv')?.value||'cto';
+  const out=document.getElementById('flatTaxResults');
+  if(!out) return;
+  if(!pv){out.innerHTML='<div class="sim-res-box" style="grid-column:1/-1;color:var(--txt3);font-size:.75rem;">Saisissez un montant pour simuler l\'impôt.</div>';return;}
+  const base=Math.max(0,pv-abat);
+  const rate=env==='cto'?FLAT_TAX_RATE:0;
+  const ir=env==='cto'?base*(FLAT_TAX_RATE-0.172):0;
+  const ps=base*0.172;
+  const total=Math.max(0,ir)+ps;
+  const net=pv-total;
+  const taxPct = (FLAT_TAX_RATE * 100).toFixed(1);
+  const irRate = Math.max(0, FLAT_TAX_RATE - 0.172);
+  out.innerHTML=`
+    <div class="sim-res-box"><div class="sim-res-val">${fmtE(base)}</div><div class="sim-res-lbl">Base imposable</div></div>
+    ${env==='cto'&&ir>0?`<div class="sim-res-box"><div class="sim-res-val" style="color:var(--dn)">−${fmtE(ir)}</div><div class="sim-res-lbl">IR (${(irRate*100).toFixed(1)}%)</div></div>`:''}
+    <div class="sim-res-box"><div class="sim-res-val" style="color:var(--warn)">−${fmtE(ps)}</div><div class="sim-res-lbl">Prél. sociaux 17.2%</div></div>
+    <div class="sim-res-box" style="border:1px solid rgba(255,77,109,.25)"><div class="sim-res-val" style="color:var(--dn)">−${fmtE(total)}</div><div class="sim-res-lbl">Total impôt (${env==='cto'?taxPct:'17.2'}%)</div></div>
+    <div class="sim-res-box" style="border:1px solid rgba(0,229,160,.2)"><div class="sim-res-val up">${fmtE(net)}</div><div class="sim-res-lbl">Net après impôt</div></div>`;
+}
+
+// ── Override renderOverview dividend section with v2 calendar ─────────
+// Patch renderDividendSection called inside renderOverview
+const _origRenderDividendSection = window.renderDividendSection;
+window.renderDividendSection = function(wrap, divPos) {
+  renderDividendCalendarV2(wrap);
+};
+
+// ════════════════════════════════════════════════════════════════════
+// END v17 FEATURES
 // ════════════════════════════════════════════════════════════════════
 
 
@@ -3816,9 +5311,13 @@ load();
 const _fxPref = localStorage.getItem('pmix_fx_enabled');
 if (_fxPref !== null) fxEnabled = (_fxPref === '1');
 loadSnapshots();
+loadCFD();
+loadFlatTaxRate();
 renderAll();
 // Auto-snapshot si nouveau jour
 setTimeout(autoSnapshot, 1500);
+// Démarrer le polling des alertes (toutes les 60s)
+startAlertPolling();
 
 // Reconnexion cloud automatique — attendre que le module Firebase ES soit prêt
 function _waitFirebaseThenReconnect(attempts) {
@@ -3841,13 +5340,50 @@ updateBadge('manual');
 <!-- MODAL IMPORT BULK CSV                                       -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="bulkModal">
-  <div class="modal" style="max-width:600px;">
+  <div class="modal" style="max-width:640px;">
     <div class="modal-title">📥 Import CSV Courtier</div>
-    <p style="font-size:.75rem;color:var(--txt2);margin-bottom:14px;line-height:1.6;">Glisse ou colle un fichier CSV exporté par <strong>Boursorama</strong>, <strong>Degiro</strong> ou <strong>Fortuneo</strong>. Les colonnes détectées seront mappées automatiquement.</p>
+    <p style="font-size:.75rem;color:var(--txt2);margin-bottom:14px;line-height:1.6;">Sélectionne ton courtier pour un mapping automatique des colonnes, puis glisse ou colle ton fichier CSV exporté.</p>
+    
+    <!-- Sélecteur de template courtier -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:.65rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Format courtier :</div>
+      <div class="csv-template-grid" id="csvBrokerTemplates">
+        <div class="csv-broker-card selected" data-template="auto" onclick="selectCSVTemplate('auto',this)">
+          <div class="csv-broker-name">🔍 Auto-detect</div>
+          <div class="csv-broker-cols">Détection intelligente des colonnes</div>
+        </div>
+        <div class="csv-broker-card" data-template="xtb" onclick="selectCSVTemplate('xtb',this)">
+          <div class="csv-broker-name" style="color:#00b4d8">XTB</div>
+          <div class="csv-broker-cols">Symbol · Quantity · Avg.Price · Currency</div>
+        </div>
+        <div class="csv-broker-card" data-template="tr" onclick="selectCSVTemplate('tr',this)">
+          <div class="csv-broker-name" style="color:#ff6b35">Trade Republic</div>
+          <div class="csv-broker-cols">ISIN · Name · Shares · Avg.Buy · Currency</div>
+        </div>
+        <div class="csv-broker-card" data-template="eb" onclick="selectCSVTemplate('eb',this)">
+          <div class="csv-broker-name" style="color:#6c63ff">Easybourse</div>
+          <div class="csv-broker-cols">Valeur · Qté · PRU · Devise</div>
+        </div>
+        <div class="csv-broker-card" data-template="bourso" onclick="selectCSVTemplate('bourso',this)">
+          <div class="csv-broker-name">Boursorama</div>
+          <div class="csv-broker-cols">Libellé · Quantité · PRU</div>
+        </div>
+        <div class="csv-broker-card" data-template="degiro" onclick="selectCSVTemplate('degiro',this)">
+          <div class="csv-broker-name">Degiro</div>
+          <div class="csv-broker-cols">Produit · Symbole · Quantité · Cours</div>
+        </div>
+      </div>
+    </div>
+
     <div style="margin-bottom:12px;">
       <div style="font-size:.65rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;">Importer dans :</div>
       <div class="bulk-broker-select" id="bulkBrokerSel"></div>
     </div>
+    <!-- Bouton fichier mobile-friendly -->
+    <label class="csv-file-btn">
+      📂 Sélectionner un fichier CSV
+      <input type="file" class="csv-file-input" id="csvFileInput" accept=".csv,.txt" onchange="onCSVFileSelect(this)">
+    </label>
     <div class="bulk-import-wrap" id="bulkDropZone"
       ondragover="event.preventDefault();this.classList.add('dragover');"
       ondragleave="this.classList.remove('dragover');"
@@ -3873,7 +5409,7 @@ updateBadge('manual');
     <div class="cours-header">
       <div class="cours-title">
         ✎ Saisie manuelle des cours
-        <span class="cours-title-badge">v15.3 — Cache Intelligent</span>
+        <span class="cours-title-badge">v18 — Achat/Vente · PRU auto · Dividendes · CFD · Alertes</span>
       </div>
       <button onclick="closeCoursModal()" style="background:none;border:none;color:var(--txt2);cursor:pointer;font-size:1.2rem;line-height:1;padding:4px;">✕</button>
     </div>
@@ -3898,6 +5434,107 @@ updateBadge('manual');
     </div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TRADE MODAL — Achat / Vente par ligne                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="trade-modal-overlay" id="tradeModalOverlay" onclick="if(event.target===this)closeTradeModal()">
+  <div class="trade-modal-box">
+    <div class="trade-modal-title" id="tradeModalTitle">Transaction</div>
+    <div class="trade-modal-subtitle" id="tradeModalSubtitle"></div>
+
+    <!-- Position actuelle -->
+    <div class="trade-pru-info">
+      <div>
+        <div class="trade-pru-item-lbl">PRU actuel</div>
+        <div class="trade-pru-item-val" id="tradePruCurrent">—</div>
+      </div>
+      <div>
+        <div class="trade-pru-item-lbl">Qté en portefeuille</div>
+        <div class="trade-pru-item-val" id="tradeQtyCurrent">—</div>
+      </div>
+      <div>
+        <div class="trade-pru-item-lbl">Cours actuel</div>
+        <div class="trade-pru-item-val" id="tradeCoursCurrent">—</div>
+      </div>
+    </div>
+
+    <!-- Saisie -->
+    <div class="form-row" style="margin-bottom:12px;">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-lbl" id="tradeQtyLabel">Quantité</label>
+        <div style="position:relative;">
+          <input class="form-input" id="tradeQtyInput" type="number" min="0.0001" step="any" placeholder="ex : 10" oninput="updateTradePreview()" style="font-family:'DM Mono',monospace;">
+          <div id="tradeMaxQtyHint" style="font-size:.62rem;margin-top:4px;"></div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-lbl" id="tradePriceLabel">Prix d'exécution</label>
+        <input class="form-input" id="tradePriceInput" type="number" min="0.0001" step="any" placeholder="ex : 45.50" oninput="updateTradePreview()" style="font-family:'DM Mono',monospace;">
+      </div>
+    </div>
+    <div class="form-row" style="margin-bottom:12px;">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-lbl">Date</label>
+        <input class="form-input" id="tradeDateInput" type="date">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-lbl">Notes (optionnel)</label>
+        <input class="form-input" id="tradeNotesInput" type="text" placeholder="ex : DCA, renforcement…">
+      </div>
+    </div>
+
+    <!-- Preview résultat -->
+    <div class="trade-result-preview" id="tradeResultPreview">
+      Saisissez une quantité et un prix pour voir le résultat.
+    </div>
+
+    <div class="modal-actions" style="margin-top:18px;">
+      <button class="btn-cancel" onclick="closeTradeModal()">Annuler</button>
+      <button class="btn-save" id="tradeConfirmBtn" onclick="confirmTrade()" style="background:var(--up);color:#000;min-width:180px;">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MOBILE BOTTOM NAV                                           -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav">
+  <button class="mbn-btn active" id="mbn-overview" onclick="switchPanel('overview');_mbnActivate('mbn-overview')">
+    <span class="mbn-icon">🏠</span>Vue d'ensemble
+  </button>
+  <button class="mbn-btn" id="mbn-cours" onclick="openCoursModal()">
+    <span class="mbn-icon">✎</span>Cours
+  </button>
+  <button class="mbn-btn" id="mbn-analyse" onclick="switchPanel('analyse');_mbnActivate('mbn-analyse')">
+    <span class="mbn-icon">📊</span>Analyse
+  </button>
+  <button class="mbn-btn" id="mbn-cfd" onclick="switchPanel('cfd');_mbnActivate('mbn-cfd')">
+    <span class="mbn-icon">⚡</span>CFD
+  </button>
+  <button class="mbn-btn" id="mbn-watchlist" onclick="switchPanel('watchlist');_mbnActivate('mbn-watchlist')">
+    <span class="mbn-icon">👁️</span>Watchlist
+  </button>
+  <button class="mbn-btn" id="mbn-settings" onclick="switchPanel('settings');_mbnActivate('mbn-settings')">
+    <span class="mbn-icon">⚙️</span>Réglages
+  </button>
+</nav>
+
+<script>
+function _mbnActivate(id) {
+  document.querySelectorAll('.mbn-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+// Sync mobile nav avec switchPanel existant
+const _origSwitchPanel2 = switchPanel;
+switchPanel = function(id, btn) {
+  _origSwitchPanel2.apply(this, arguments);
+  const map={overview:'mbn-overview',analyse:'mbn-analyse',watchlist:'mbn-watchlist',settings:'mbn-settings',fiscal:'mbn-settings',cfd:'mbn-cfd'};
+  if(map[id]) _mbnActivate(map[id]);
+  else if(id.startsWith('broker-')) _mbnActivate('mbn-overview');
+};
+</script>
 
 </body>
 </html>
