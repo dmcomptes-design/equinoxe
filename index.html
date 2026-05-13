@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Équinoxe v18 — Dashboard Patrimonial</title>
+<title>Équinoxe — Dashboard Patrimonial</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script type="module">
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
 const _fbApp = initializeApp({
   apiKey:            "AIzaSyAhh1SywIf1_FXDk7SWHKrQBWbGHNYilTo",
@@ -18,9 +19,15 @@ const _fbApp = initializeApp({
   messagingSenderId: "246710150883",
   appId:             "1:246710150883:web:f65556caf5ca79597f87d6"
 });
-const _fbDb = getFirestore(_fbApp);
+const _fbDb   = getFirestore(_fbApp);
+const _fbAuth = getAuth(_fbApp);
 
-window._firebase = { db: _fbDb, doc, getDoc, setDoc, onSnapshot };
+onAuthStateChanged(_fbAuth, user => {
+  window._fbUser = user || null;
+  if (typeof updateSyncStatusBar === 'function') updateSyncStatusBar();
+});
+
+window._firebase = { db: _fbDb, auth: _fbAuth, doc, getDoc, setDoc, onSnapshot, GoogleAuthProvider, signInWithPopup, signOut };
 </script>
 <style>
 :root{
@@ -1080,15 +1087,24 @@ tbody tr:active{transform:scaleX(.997);background:rgba(108,99,255,.05)!important
       <strong style="color:var(--txt)">Firebase Firestore</strong>.
     </p>
 
-    <div class="sync-step" id="syncConnectStep">
-      <div class="sync-step-title"><div class="sync-step-num">1</div> Activer la synchronisation</div>
-      <div style="font-size:.72rem;color:var(--txt2);line-height:1.7;margin-bottom:14px;">
-        La base Firebase est déjà configurée dans l'application.<br>
-        Clique simplement sur <strong style="color:var(--txt)">Connecter</strong> pour activer la sync multi-appareils.
+    <!-- ── Connexion Google (affiché si non connecté) ── -->
+    <div class="sync-step" id="syncLoginStep">
+      <div class="sync-step-title"><div class="sync-step-num">1</div> Connexion sécurisée</div>
+      <div style="font-size:.72rem;color:var(--txt2);line-height:1.7;margin-bottom:16px;">
+        Connecte-toi avec ton compte Google pour sécuriser l'accès à tes données cloud.
       </div>
-      <button class="btn-save" onclick="connectSupabase()" style="background:#6c63ff;color:#fff;">🔗 Connecter au cloud</button>
+      <div id="syncLoginError" style="font-size:.72rem;color:var(--dn);margin-bottom:12px;display:none;padding:8px 12px;background:var(--dn2);border-radius:8px;"></div>
+      <button id="syncGoogleBtn" onclick="doGoogleLogin()" style="
+        display:flex;align-items:center;justify-content:center;gap:10px;
+        width:100%;padding:11px 18px;border-radius:10px;border:1px solid var(--border2);
+        background:var(--bg3);color:var(--txt);font-family:inherit;font-size:.85rem;font-weight:600;
+        cursor:pointer;transition:all .2s;">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+        Se connecter avec Google
+      </button>
     </div>
 
+    <!-- ── Statut (affiché si connecté) ── -->
     <div class="sync-status-bar" id="syncStatusBar" style="display:none;">
       <div class="sync-dot" id="syncStatusDot"></div>
       <div id="syncStatusText" style="flex:1;"></div>
@@ -1231,6 +1247,8 @@ function load() {
     if (t) transactions=JSON.parse(t);
     const w = localStorage.getItem('pmix_wl');
     if (w) watchlist=JSON.parse(w);
+    const pp2 = localStorage.getItem('pmix_prev');
+    if (pp2) prevPrices=JSON.parse(pp2);
     BROKERS.forEach(b => {
       if (!portfolios[b.id]) portfolios[b.id]=[];
       if (liquidites[b.id]===undefined) liquidites[b.id]=0;
@@ -1791,14 +1809,19 @@ function renderOverview() {
           const progress=Math.min(Math.max((p.current-p.avg)/(p.target-p.avg)*100,0),100);
           const col=upside>=0?'var(--up)':'var(--dn)';
           const conv=p.conviction||0;
-          return `<div class="obj-card">
+          const bColor=p.brokerColor||'var(--txt3)';
+          const bName=p.brokerName||p.brokerId||'';
+          return `<div class="obj-card" style="border-top:2px solid ${bColor}30;position:relative;">
             <div class="obj-card-top">
               <div>
                 <span class="obj-ticker">${p.ticker}</span>
                 <span style="font-size:.62rem;color:var(--txt2);margin-left:6px;">${p.name}</span>
-                ${conv?'<span style="font-size:.6rem;margin-left:4px;">${"⭐".repeat(conv)}</span>':''}
+                ${conv?`<span style="font-size:.6rem;margin-left:4px;">${"⭐".repeat(conv)}</span>`:''}
               </div>
-              <span class="obj-upside" style="color:${col}">${upside>=0?'+':''}${fmt(upside,1)}%</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:6px;background:${bColor}18;color:${bColor};border:1px solid ${bColor}35;white-space:nowrap;">${bName}</span>
+                <span class="obj-upside" style="color:${col}">${upside>=0?'+':''}${fmt(upside,1)}%</span>
+              </div>
             </div>
             <div class="obj-bar-wrap"><div class="obj-bar-fill" style="width:${progress}%;background:${progress>=100?'var(--up)':progress>50?'var(--warn)':'var(--txt3)'}"></div></div>
             <div class="obj-prices">
@@ -3027,6 +3050,32 @@ function deserializeAll(data) {
   return true;
 }
 
+// ── Connexion Google ──
+async function doGoogleLogin() {
+  const btn = document.getElementById('syncGoogleBtn');
+  const errEl = document.getElementById('syncLoginError');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.6'; }
+  if (errEl) errEl.style.display = 'none';
+  try {
+    const { auth, GoogleAuthProvider, signInWithPopup } = window._firebase;
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    // onAuthStateChanged met à jour window._fbUser automatiquement
+    await connectSupabase();
+  } catch(e) {
+    const msgs = {
+      'auth/popup-closed-by-user':    'Fenêtre fermée avant la connexion.',
+      'auth/popup-blocked':           'Pop-up bloquée par le navigateur. Autorise les pop-ups pour ce site.',
+      'auth/cancelled-popup-request': 'Connexion annulée.',
+      'auth/unauthorized-domain':     'Ce domaine n\'est pas autorisé dans Firebase. Ajoute-le dans Authentication → Settings → Authorized domains.',
+    };
+    const msg = msgs[e.code] || e.message.slice(0, 100);
+    if (errEl) { errEl.textContent = '⚠️ ' + msg; errEl.style.display = 'block'; }
+    showNotif('⚠️ Connexion échouée', msg, 'var(--dn)');
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+  }
+}
+
 // ── Connexion (un seul clic — pas de saisie de clés) ──
 async function connectSupabase() {
   setSyncBadge('syncing', 'Connexion…');
@@ -3051,6 +3100,9 @@ function disconnectSupabase() {
   _syncEnabled = false; _syncPending = false;
   setSyncBadge('offline', 'Cloud');
   updateSyncStatusBar();
+  // Déconnexion Firebase Auth
+  try { const { auth, signOut } = window._firebase; signOut(auth).catch(()=>{}); } catch(e) {}
+  window._fbUser = null;
   showNotif('🔌 Sync désactivée', 'Données locales uniquement', 'var(--txt2)');
 }
 
@@ -3161,17 +3213,24 @@ async function setupRealtimeSync() {
 }
 
 function updateSyncStatusBar() {
-  const bar  = document.getElementById('syncStatusBar');
-  const dot  = document.getElementById('syncStatusDot');
-  const text = document.getElementById('syncStatusText');
+  const bar      = document.getElementById('syncStatusBar');
+  const loginStep= document.getElementById('syncLoginStep');
+  const dot      = document.getElementById('syncStatusDot');
+  const text     = document.getElementById('syncStatusText');
   if (!bar) return;
-  bar.style.display = 'flex';
+
+  const isAuthed = !!(window._fbUser);
+  // Afficher formulaire login si pas authentifié, statut si connecté
+  if (loginStep) loginStep.style.display = (isAuthed && _syncEnabled) ? 'none' : 'block';
+  bar.style.display = (isAuthed && _syncEnabled) ? 'flex' : 'none';
+
   if (_syncEnabled) {
-    dot.style.background = 'var(--up)';
-    text.innerHTML = `<span style="color:var(--up);font-weight:700;">Connecté</span>${_lastSyncAt ? ` · Dernière sync : ${_lastSyncAt.toLocaleTimeString('fr-FR')}` : ''}${_syncPending ? ' · <span style="color:var(--warn)">Modifications en attente</span>' : ''}`;
+    if (dot) dot.style.background = 'var(--up)';
+    const userEmail = window._fbUser?.email ? ` · ${window._fbUser.email}` : '';
+    if (text) text.innerHTML = `<span style="color:var(--up);font-weight:700;">Connecté</span>${userEmail}${_lastSyncAt ? ` · ${_lastSyncAt.toLocaleTimeString('fr-FR')}` : ''}${_syncPending ? ' · <span style="color:var(--warn)">En attente</span>' : ''}`;
   } else {
-    dot.style.background = 'var(--txt3)';
-    text.textContent = 'Non connecté — données locales uniquement';
+    if (dot) dot.style.background = 'var(--txt3)';
+    if (text) text.textContent = 'Non connecté — données locales uniquement';
   }
 }
 
@@ -3183,6 +3242,7 @@ function save() {
     localStorage.setItem('pmix_tx',      JSON.stringify(transactions));
     localStorage.setItem('pmix_wl',      JSON.stringify(watchlist));
     localStorage.setItem('pmix_last_save', Date.now().toString());
+    if (Object.keys(prevPrices).length) localStorage.setItem('pmix_prev', JSON.stringify(prevPrices));
   } catch(e) {}
   if (_syncEnabled && !_applyingRemote) {   // ne pas repousser les données qu'on vient de recevoir
     _syncPending = true;
@@ -3197,8 +3257,16 @@ function openSyncModal() {
 }
 function closeSyncModal() { document.getElementById('syncModal').classList.remove('open'); }
 
-// ── Reconnexion automatique au démarrage ──
+// ── Reconnexion automatique au démarrage (uniquement si déjà authentifié) ──
 async function autoReconnect() {
+  // Firebase Auth persiste la session — on attend la résolution de l'état auth
+  await new Promise(resolve => {
+    const { auth } = window._firebase;
+    if (!auth) { resolve(); return; }
+    const unsub = auth.onAuthStateChanged ? auth.onAuthStateChanged(user => { unsub(); window._fbUser = user; resolve(); }) : null;
+    if (!unsub) resolve();
+  });
+  if (!window._fbUser) { setSyncBadge('offline', 'Cloud'); return; } // Pas connecté → pas de reconnexion
   setSyncBadge('syncing', 'Reconnexion…');
   try {
     const { db, doc, getDoc } = window._firebase;
@@ -3527,6 +3595,11 @@ function applyManualPrices() {
 
   const now = new Date();
   let count = 0;
+
+  // Snapshot des cours actuels AVANT la mise à jour → variation du jour
+  const freshPrev = {};
+  BROKERS.forEach(b=>(portfolios[b.id]||[]).forEach(p=>{ if(p.current) freshPrev[p.ticker]=p.current; }));
+  prevPrices = freshPrev;
 
   Object.entries(_coursPending).forEach(([key, newPrice]) => {
     const [brokerId, idxStr] = key.split('|');
@@ -5409,7 +5482,7 @@ updateBadge('manual');
     <div class="cours-header">
       <div class="cours-title">
         ✎ Saisie manuelle des cours
-        <span class="cours-title-badge">v18 — Achat/Vente · PRU auto · Dividendes · CFD · Alertes</span>
+        <span class="cours-title-badge">Achat/Vente · PRU auto · Dividendes · CFD · Alertes</span>
       </div>
       <button onclick="closeCoursModal()" style="background:none;border:none;color:var(--txt2);cursor:pointer;font-size:1.2rem;line-height:1;padding:4px;">✕</button>
     </div>
